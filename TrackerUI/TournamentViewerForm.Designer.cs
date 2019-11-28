@@ -83,7 +83,7 @@
             this.roundDropDown.FormattingEnabled = true;
             this.roundDropDown.Location = new System.Drawing.Point(128, 110);
             this.roundDropDown.Name = "roundDropDown";
-            this.roundDropDown.Size = new System.Drawing.Size(228, 38);
+            this.roundDropDown.Size = new System.Drawing.Size(203, 38);
             this.roundDropDown.TabIndex = 3;
             // 
             // unplayedCheckBox
@@ -105,7 +105,7 @@
             this.matchupListBox.ItemHeight = 30;
             this.matchupListBox.Location = new System.Drawing.Point(33, 205);
             this.matchupListBox.Name = "matchupListBox";
-            this.matchupListBox.Size = new System.Drawing.Size(323, 242);
+            this.matchupListBox.Size = new System.Drawing.Size(298, 242);
             this.matchupListBox.TabIndex = 5;
             // 
             // teamOneName
@@ -183,7 +183,7 @@
             // scoreButton
             // 
             this.scoreButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.scoreButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray;
+            this.scoreButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
             this.scoreButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ButtonFace;
             this.scoreButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.scoreButton.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
