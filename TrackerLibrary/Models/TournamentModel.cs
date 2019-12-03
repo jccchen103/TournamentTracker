@@ -14,7 +14,7 @@ namespace TrackerLibrary
         /// <summary>
         /// The unique identifier for the tournament.
         /// </summary>
-        public int Id { get; }
+        public int Id { get; set; }
 
         /// <summary>
         /// The name of this tournament.

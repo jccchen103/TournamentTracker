@@ -14,7 +14,7 @@ namespace TrackerLibrary
         /// <summary>
         /// The unique identifier for the prize.
         /// </summary>
-        public int Id { get; }
+        public int Id { get; set; }
 
         /// <summary>
         /// The place number of the team that gets this prize.
