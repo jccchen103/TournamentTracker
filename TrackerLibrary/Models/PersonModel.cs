@@ -9,7 +9,7 @@ namespace TrackerLibrary
     /// <summary>
     /// Represents one person.
     /// </summary>
-    class PersonModel
+    public class PersonModel
     {
         /// <summary>
         /// The first name of this person.

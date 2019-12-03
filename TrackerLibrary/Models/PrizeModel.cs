@@ -9,7 +9,7 @@ namespace TrackerLibrary
     /// <summary>
     /// Represents one prize rewarded in a tournament.
     /// </summary>
-    class PrizeModel
+    public class PrizeModel
     {
         /// <summary>
         /// The place number of the team that gets this prize.

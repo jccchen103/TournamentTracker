@@ -9,7 +9,7 @@ namespace TrackerLibrary
     /// <summary>
     /// Represents one team.
     /// </summary>
-    class TeamModel
+    public class TeamModel
     {
         /// <summary>
         /// The people that make up this team.
