@@ -29,19 +29,12 @@ namespace TrackerLibrary
         /// <summary>
         /// The monetary amount of this prize. 
         /// </summary>
-        /// <remarks>
-        /// Either PrizeAmount or PrizePercentage is used for the prizes of 
-        /// a given tournament.
-        /// </remarks>        public decimal PrizeAmount { get; set; }
+        public decimal PrizeAmount { get; set; }
 
         /// <summary>
         /// The percentage of the total income from this tournament that
         /// is given as this prize.
         /// </summary>
-        /// <remarks>
-        /// Either PrizeAmount or PrizePercentage is used for the prizes of 
-        /// a given tournament.
-        /// </remarks>
         public double PrizePercentage { get; set; }
     }
 }
