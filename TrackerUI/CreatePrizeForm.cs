@@ -18,14 +18,33 @@ namespace TrackerUI
             InitializeComponent();
         }
 
-        private void createPrizeButton_Click(object sender, EventArgs e)
+        private void CreatePrizeButton_Click(object sender, EventArgs e)
         {
             if (ValidateFields())
             {
-                // create prize
-                PrizeModel model = new PrizeModel(placeNameValue.Text, placeNameValue.Text, prizeAmountValue.Text, prizePercentageValue.Text);
-            }
+                // create prize model
+                PrizeModel model = new PrizeModel(
+                    placeNameValue.Text, 
+                    placeNameValue.Text, 
+                    prizeAmountValue.Text, 
+                    prizePercentageValue.Text);
 
+                // add prize model to data connections
+                foreach (IDataConnection db in GlobalConfig.Connections)
+                {
+                    db.CreatePrize(model);
+                }
+
+                // clear input fields to default values
+                placeNameValue.Text = "";
+                placeNameValue.Text = "";
+                prizeAmountValue.Text = "0";
+                prizePercentageValue.Text = "0";
+            }
+            else
+            {
+                MessageBox.Show("This form has invalid information. Please check it and try again.");
+            }
         }
 
         /// <summary>
@@ -45,10 +64,6 @@ namespace TrackerUI
             {
                 output = false; // place name input is empty
             }
-
-            // interpret an empty prize amount or prize percentage as 0
-            if (prizeAmountValue.Text.Length == 0) { prizeAmountValue.Text = "0"; }
-            if (prizePercentageValue.Text.Length == 0) { prizePercentageValue.Text = "0"; }
 
             decimal prizeAmount;
             double prizePercentage;
