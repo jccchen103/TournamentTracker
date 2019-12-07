@@ -40,6 +40,7 @@
             this.placeNameValue = new System.Windows.Forms.TextBox();
             this.placeNameLabel = new System.Windows.Forms.Label();
             this.orLabel = new System.Windows.Forms.Label();
+            this.percentLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // placeNumberValue
@@ -79,16 +80,18 @@
             this.createPrizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.createPrizeButton.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.createPrizeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.createPrizeButton.Location = new System.Drawing.Point(145, 384);
+            this.createPrizeButton.Location = new System.Drawing.Point(145, 383);
             this.createPrizeButton.Name = "createPrizeButton";
             this.createPrizeButton.Size = new System.Drawing.Size(248, 62);
             this.createPrizeButton.TabIndex = 39;
             this.createPrizeButton.Text = "Create Prize";
             this.createPrizeButton.UseVisualStyleBackColor = true;
+            this.createPrizeButton.Click += new System.EventHandler(this.createPrizeButton_Click);
             // 
             // prizePercentageValue
             // 
             this.prizePercentageValue.Location = new System.Drawing.Point(271, 312);
+            this.prizePercentageValue.MaxLength = 15;
             this.prizePercentageValue.Name = "prizePercentageValue";
             this.prizePercentageValue.Size = new System.Drawing.Size(207, 35);
             this.prizePercentageValue.TabIndex = 41;
@@ -150,7 +153,16 @@
             this.orLabel.Size = new System.Drawing.Size(64, 37);
             this.orLabel.TabIndex = 46;
             this.orLabel.Text = "-or-";
-            this.orLabel.Click += new System.EventHandler(this.orLabel_Click);
+            // 
+            // percentLabel
+            // 
+            this.percentLabel.AutoSize = true;
+            this.percentLabel.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.percentLabel.Location = new System.Drawing.Point(446, 315);
+            this.percentLabel.Name = "percentLabel";
+            this.percentLabel.Size = new System.Drawing.Size(30, 30);
+            this.percentLabel.TabIndex = 47;
+            this.percentLabel.Text = "%";
             // 
             // CreatePrizeForm
             // 
@@ -158,6 +170,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(541, 475);
+            this.Controls.Add(this.percentLabel);
             this.Controls.Add(this.prizePercentageValue);
             this.Controls.Add(this.orLabel);
             this.Controls.Add(this.placeNameValue);
@@ -193,5 +206,6 @@
         private System.Windows.Forms.TextBox placeNameValue;
         private System.Windows.Forms.Label placeNameLabel;
         private System.Windows.Forms.Label orLabel;
+        private System.Windows.Forms.Label percentLabel;
     }
 }
