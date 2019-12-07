@@ -35,6 +35,16 @@ namespace TrackerLibrary
         /// The percentage of the total income from this tournament that
         /// is given as this prize.
         /// </summary>
-        public double PrizePercentage { get; set; }
+        public int PrizePercentage { get; set; }
+
+        public PrizeModel() { }
+
+        public PrizeModel(int placeNumber, string placeName, decimal prizeAmount, int prizePercentage)
+        {
+            PlaceNumber = placeNumber;
+            PlaceName = placeName;
+            PrizeAmount = prizeAmount;
+            PrizePercentage = prizePercentage;
+        }
     }
 }
