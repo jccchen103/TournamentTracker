@@ -47,7 +47,7 @@
             this.createTournamentButton.Location = new System.Drawing.Point(169, 300);
             this.createTournamentButton.Name = "createTournamentButton";
             this.createTournamentButton.Size = new System.Drawing.Size(248, 62);
-            this.createTournamentButton.TabIndex = 43;
+            this.createTournamentButton.TabIndex = 4;
             this.createTournamentButton.Text = "Create Tournament";
             this.createTournamentButton.UseVisualStyleBackColor = true;
             // 
@@ -62,7 +62,7 @@
             this.loadTournamentButton.Location = new System.Drawing.Point(195, 215);
             this.loadTournamentButton.Name = "loadTournamentButton";
             this.loadTournamentButton.Size = new System.Drawing.Size(196, 40);
-            this.loadTournamentButton.TabIndex = 42;
+            this.loadTournamentButton.TabIndex = 3;
             this.loadTournamentButton.Text = "Load Tournament";
             this.loadTournamentButton.UseVisualStyleBackColor = true;
             // 
@@ -72,7 +72,7 @@
             this.loadTournamentDropDown.Location = new System.Drawing.Point(137, 163);
             this.loadTournamentDropDown.Name = "loadTournamentDropDown";
             this.loadTournamentDropDown.Size = new System.Drawing.Size(313, 38);
-            this.loadTournamentDropDown.TabIndex = 41;
+            this.loadTournamentDropDown.TabIndex = 2;
             // 
             // loadTournamentLabel
             // 
@@ -82,7 +82,7 @@
             this.loadTournamentLabel.Location = new System.Drawing.Point(132, 115);
             this.loadTournamentLabel.Name = "loadTournamentLabel";
             this.loadTournamentLabel.Size = new System.Drawing.Size(322, 37);
-            this.loadTournamentLabel.TabIndex = 40;
+            this.loadTournamentLabel.TabIndex = 1;
             this.loadTournamentLabel.Text = "Load Existing Tournament";
             // 
             // headerLabel
@@ -93,7 +93,7 @@
             this.headerLabel.Location = new System.Drawing.Point(106, 42);
             this.headerLabel.Name = "headerLabel";
             this.headerLabel.Size = new System.Drawing.Size(374, 47);
-            this.headerLabel.TabIndex = 39;
+            this.headerLabel.TabIndex = 0;
             this.headerLabel.Text = "Tournament Dashboard";
             // 
             // TournamentDashboardForm

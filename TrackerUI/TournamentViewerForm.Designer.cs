@@ -145,7 +145,7 @@
             this.scoreTwoValue.Location = new System.Drawing.Point(488, 401);
             this.scoreTwoValue.Name = "scoreTwoValue";
             this.scoreTwoValue.Size = new System.Drawing.Size(100, 35);
-            this.scoreTwoValue.TabIndex = 11;
+            this.scoreTwoValue.TabIndex = 12;
             // 
             // scoreTwoLabel
             // 
@@ -155,7 +155,7 @@
             this.scoreTwoLabel.Location = new System.Drawing.Point(400, 399);
             this.scoreTwoLabel.Name = "scoreTwoLabel";
             this.scoreTwoLabel.Size = new System.Drawing.Size(82, 37);
-            this.scoreTwoLabel.TabIndex = 10;
+            this.scoreTwoLabel.TabIndex = 11;
             this.scoreTwoLabel.Text = "Score";
             // 
             // teamTwoName
@@ -166,7 +166,7 @@
             this.teamTwoName.Location = new System.Drawing.Point(400, 358);
             this.teamTwoName.Name = "teamTwoName";
             this.teamTwoName.Size = new System.Drawing.Size(215, 37);
-            this.teamTwoName.TabIndex = 9;
+            this.teamTwoName.TabIndex = 10;
             this.teamTwoName.Text = "<Team 2 Name>";
             // 
             // versusLabel
@@ -177,7 +177,7 @@
             this.versusLabel.Location = new System.Drawing.Point(481, 306);
             this.versusLabel.Name = "versusLabel";
             this.versusLabel.Size = new System.Drawing.Size(70, 37);
-            this.versusLabel.TabIndex = 12;
+            this.versusLabel.TabIndex = 9;
             this.versusLabel.Text = "-VS-";
             this.versusLabel.Click += new System.EventHandler(this.label1_Click_2);
             // 
