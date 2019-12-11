@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,30 +13,33 @@ namespace TrackerLibrary
     /// </summary>
     public static class GlobalConfig
     {
-        public static List<IDataConnection> Connections { get; private set; }
+        public static IDataConnection Connections { get; private set; }
 
         /// <summary>
         /// Set connections to the specified data source(s).
         /// </summary>
-        /// <param name="mysqlDB">If true, use a mySQL database as a data source.</param>
-        /// <param name="textFiles">If true, use text files as a data source.</param>
-        public static void InitializeConnections(bool mysqlDB, bool textFiles)
+        /// <param name="db">
+        /// The type of database to use as the data source (sql or text file).
+        /// </param>
+        public static void InitializeConnections(DatabaseType db)
         {
-            Connections = new List<IDataConnection>();
-
-            if (mysqlDB)
+            if (db == DatabaseType.Sql)
             {
                 // TODO: Set up the SQL Connection
                 SqlConnector sql = new SqlConnector();
-                Connections.Add(sql);
+                Connections = sql;
             }
-
-            if (textFiles)
+            else if (db == DatabaseType.TextFile)
             {
                 // TODO: Create the Text Connection
                 TextConnector text = new TextConnector();
-                Connections.Add(text);
+                Connections = text;
             }
+        }
+
+        public static string GetConnectionString(string name)
+        {
+            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
     }
 }

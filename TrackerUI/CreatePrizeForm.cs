@@ -26,19 +26,16 @@ namespace TrackerUI
             {
                 // create prize model
                 PrizeModel model = new PrizeModel(
-                    placeNameValue.Text, 
-                    placeNameValue.Text, 
-                    prizeAmountValue.Text, 
+                    placeNumberValue.Text,
+                    placeNameValue.Text,
+                    prizeAmountValue.Text,
                     prizePercentageValue.Text);
 
-                // add prize model to data connections
-                foreach (IDataConnection db in GlobalConfig.Connections)
-                {
-                    db.CreatePrize(model);
-                }
+                // add prize model to the data source
+                GlobalConfig.Connections.CreatePrize(model);
 
                 // clear input fields to default values
-                placeNameValue.Text = "";
+                placeNumberValue.Text = "";
                 placeNameValue.Text = "";
                 prizeAmountValue.Text = "0";
                 prizePercentageValue.Text = "0";
