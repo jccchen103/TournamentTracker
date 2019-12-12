@@ -64,6 +64,7 @@
             this.addMemberButton.TabIndex = 5;
             this.addMemberButton.Text = "Add Member";
             this.addMemberButton.UseVisualStyleBackColor = true;
+            this.addMemberButton.Click += new System.EventHandler(this.AddMemberButton_Click);
             // 
             // selectTeamMemberDropDown
             // 
@@ -112,7 +113,6 @@
             this.headerLabel.Size = new System.Drawing.Size(208, 47);
             this.headerLabel.TabIndex = 0;
             this.headerLabel.Text = "Create Team";
-            this.headerLabel.Click += new System.EventHandler(this.headerLabel_Click);
             // 
             // newMemberGroupBox
             // 
@@ -212,7 +212,7 @@
             this.createTeamButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.createTeamButton.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.createTeamButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
-            this.createTeamButton.Location = new System.Drawing.Point(357, 624);
+            this.createTeamButton.Location = new System.Drawing.Point(357, 628);
             this.createTeamButton.Name = "createTeamButton";
             this.createTeamButton.Size = new System.Drawing.Size(248, 62);
             this.createTeamButton.TabIndex = 17;
@@ -260,8 +260,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.AutoScrollMargin = new System.Drawing.Size(0, 30);
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(987, 701);
+            this.ClientSize = new System.Drawing.Size(987, 651);
             this.Controls.Add(this.deleteMembersButton);
             this.Controls.Add(this.currentTeamLabel);
             this.Controls.Add(this.teamMembersListBox);

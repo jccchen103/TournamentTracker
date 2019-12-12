@@ -27,8 +27,12 @@ namespace TrackerLibrary.Models
         public string LastName { get; set; }
 
         /// <summary>
-        /// The email this person registered with.
+        /// The email address this person registered with.
         /// </summary>
-        public string EmailAddress { get; set; }
+        public string Email { get; set; }
+
+        public string FullName { 
+            get { return $"{FirstName} {LastName}"; }
+        }
     }
 }

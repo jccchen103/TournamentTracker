@@ -33,5 +33,11 @@ namespace TrackerLibrary.DataAccess
 
             return model;
         }
+
+        // TODO: implement GetPeople() for text connector
+        public List<PersonModel> GetPeople()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

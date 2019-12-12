@@ -38,5 +38,16 @@ namespace TrackerLibrary.DataAccess
 
             return model;
         }
+
+        public List<PersonModel> GetPeople()
+        {
+            List<PersonModel> output = new List<PersonModel>();
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString("Tournaments")))
+            {
+                output = connection.Query<PersonModel>("people_all").ToList();
+            }
+
+            return output;
+        }
     }
 }
