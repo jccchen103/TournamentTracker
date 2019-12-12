@@ -16,7 +16,7 @@ namespace TrackerUI
     public partial class CreateTeamForm : Form
     {
         private List<PersonModel> availableMembers = GlobalConfig.Connections.GetPeople();
-        private List<PersonModel> listBoxMembers = new List<PersonModel>();
+        private List<PersonModel> selectedTeam = new List<PersonModel>();
 
         public CreateTeamForm()
         {
@@ -32,7 +32,7 @@ namespace TrackerUI
             PersonModel selected = (PersonModel)selectTeamMemberDropDown.SelectedItem;
             if (!(selected is null))
             {
-                listBoxMembers.Add(selected);
+                selectedTeam.Add(selected);
                 availableMembers.Remove(selected);
 
                 WireUpLists();
@@ -48,7 +48,7 @@ namespace TrackerUI
 
             // Set list box members
             teamMembersListBox.DataSource = null;
-            teamMembersListBox.DataSource = listBoxMembers;
+            teamMembersListBox.DataSource = selectedTeam;
             teamMembersListBox.DisplayMember = "FullName";
 
         }
@@ -65,6 +65,10 @@ namespace TrackerUI
                     Email = emailValue.Text
                 };
                 GlobalConfig.Connections.CreatePerson(p);
+
+                // add the new person to the team
+                selectedTeam.Add(p);
+                WireUpLists();
 
                 // clear input fields
                 firstNameValue.Text = "";
