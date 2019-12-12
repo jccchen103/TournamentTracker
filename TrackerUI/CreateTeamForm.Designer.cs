@@ -36,7 +36,7 @@
             this.teamNameLabel = new System.Windows.Forms.Label();
             this.headerLabel = new System.Windows.Forms.Label();
             this.newMemberGroupBox = new System.Windows.Forms.GroupBox();
-            this.scoreOneValue = new System.Windows.Forms.TextBox();
+            this.firstNameValue = new System.Windows.Forms.TextBox();
             this.createMemberButton = new System.Windows.Forms.Button();
             this.emailValue = new System.Windows.Forms.TextBox();
             this.emailLabel = new System.Windows.Forms.Label();
@@ -116,7 +116,7 @@
             // 
             // newMemberGroupBox
             // 
-            this.newMemberGroupBox.Controls.Add(this.scoreOneValue);
+            this.newMemberGroupBox.Controls.Add(this.firstNameValue);
             this.newMemberGroupBox.Controls.Add(this.createMemberButton);
             this.newMemberGroupBox.Controls.Add(this.emailValue);
             this.newMemberGroupBox.Controls.Add(this.emailLabel);
@@ -132,13 +132,13 @@
             this.newMemberGroupBox.TabStop = false;
             this.newMemberGroupBox.Text = "Add New Member";
             // 
-            // scoreOneValue
+            // firstNameValue
             // 
-            this.scoreOneValue.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scoreOneValue.Location = new System.Drawing.Point(171, 49);
-            this.scoreOneValue.Name = "scoreOneValue";
-            this.scoreOneValue.Size = new System.Drawing.Size(169, 35);
-            this.scoreOneValue.TabIndex = 8;
+            this.firstNameValue.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.firstNameValue.Location = new System.Drawing.Point(171, 49);
+            this.firstNameValue.Name = "firstNameValue";
+            this.firstNameValue.Size = new System.Drawing.Size(169, 35);
+            this.firstNameValue.TabIndex = 8;
             // 
             // createMemberButton
             // 
@@ -154,6 +154,7 @@
             this.createMemberButton.TabIndex = 13;
             this.createMemberButton.Text = "Create Member";
             this.createMemberButton.UseVisualStyleBackColor = true;
+            this.createMemberButton.Click += new System.EventHandler(this.CreateMemberButton_Click);
             // 
             // emailValue
             // 
@@ -305,6 +306,6 @@
         private System.Windows.Forms.Button deleteMembersButton;
         private System.Windows.Forms.Label currentTeamLabel;
         private System.Windows.Forms.ListBox teamMembersListBox;
-        private System.Windows.Forms.TextBox scoreOneValue;
+        private System.Windows.Forms.TextBox firstNameValue;
     }
 }

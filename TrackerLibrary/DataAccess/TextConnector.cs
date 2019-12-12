@@ -12,6 +12,12 @@ namespace TrackerLibrary.DataAccess
     {
         // text files for text-based database
         private const string PrizesFile = "PrizeModels.csv";
+
+        public PersonModel CreatePerson(PersonModel model)
+        {
+            throw new NotImplementedException();    // TODO: add person data to text file
+        }
+
         //private const string PeopleFile = "PeopleModels.csv";
         //private const string TeamsFile = "TeamsModels.csv";
         //private const string TournamentsFile = "TournamentsModels.csv";

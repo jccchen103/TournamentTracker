@@ -15,6 +15,13 @@ namespace TrackerLibrary.DataAccess
     /// </summary>
     public class SqlConnector : IDataConnection
     {
+        public PersonModel CreatePerson(PersonModel model)
+        {
+            // TODO: add person data to sql db
+            model.Id = 42;
+            return model;
+        }
+
         /// <summary>
         /// Saves a prize to the database.
         /// </summary>

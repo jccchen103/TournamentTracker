@@ -22,7 +22,7 @@ namespace TrackerUI
 
         private void CreatePrizeButton_Click(object sender, EventArgs e)
         {
-            if (ValidateFields())
+            if (ValidInputs())
             {
                 // create prize model
                 PrizeModel model = new PrizeModel(
@@ -49,7 +49,8 @@ namespace TrackerUI
         /// <summary>
         /// Validate user inputs on a Create Prize form.
         /// </summary>
-        private bool ValidateFields()
+        /// <returns>Whether the inputs were valid.</returns>
+        private bool ValidInputs()
         {
             bool output = true;
             int placeNumber;
