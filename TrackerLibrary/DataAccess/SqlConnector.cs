@@ -24,7 +24,6 @@ namespace TrackerLibrary.DataAccess
         {
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString("Tournaments")))
             {
-                // TODO: Save to prizes table in db.
                 var p = new DynamicParameters();
                 p.Add("p_place_number", model.PlaceNumber);
                 p.Add("p_place_name", model.PlaceName);
@@ -34,9 +33,9 @@ namespace TrackerLibrary.DataAccess
 
                 connection.Execute("prizes_insert", p, commandType: CommandType.StoredProcedure);
 
-                // TODO: Get id of the inserted prize and set Id of model.
                 model.Id = p.Get<int>("@p_id");
             }
+
             return model;
         }
     }

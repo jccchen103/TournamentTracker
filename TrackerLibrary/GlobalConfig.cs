@@ -19,7 +19,7 @@ namespace TrackerLibrary
         /// Set connections to the specified data source(s).
         /// </summary>
         /// <param name="db">
-        /// The type of database to use as the data source (sql or text file).
+        /// The type of database to use as the data source (sql or text files).
         /// </param>
         public static void InitializeConnections(DatabaseType db)
         {
