@@ -253,7 +253,7 @@
             this.teamMembersListBox.ItemHeight = 30;
             this.teamMembersListBox.Location = new System.Drawing.Point(481, 138);
             this.teamMembersListBox.Name = "teamMembersListBox";
-            this.teamMembersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.teamMembersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.teamMembersListBox.Size = new System.Drawing.Size(328, 452);
             this.teamMembersListBox.TabIndex = 15;
             // 

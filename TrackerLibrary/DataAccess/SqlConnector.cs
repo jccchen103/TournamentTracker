@@ -15,18 +15,34 @@ namespace TrackerLibrary.DataAccess
     /// </summary>
     public class SqlConnector : IDataConnection
     {
+        /// <summary>
+        /// Saves a person to the database.
+        /// </summary>
+        /// <param name="model">The person model with the data to be inserted.</param>
+        /// <returns>The person model that was inserted with its id filled.</returns>
         public PersonModel CreatePerson(PersonModel model)
         {
-            // TODO: add person data to sql db
-            model.Id = 42;
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString("Tournaments")))
+            {
+                var p = new DynamicParameters();
+                p.Add("p_first_name", model.FirstName);
+                p.Add("p_last_name", model.LastName);
+                p.Add("p_email", model.Email);
+                p.Add("@p_id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                connection.Execute("people_insert", p, commandType: CommandType.StoredProcedure);
+
+                model.Id = p.Get<int>("@p_id");
+            }
+
             return model;
         }
 
         /// <summary>
         /// Saves a prize to the database.
         /// </summary>
-        /// <param name="model">The prize information to be inserted.</param>
-        /// <returns>The prize information that was inserted, including the id.</returns>
+        /// <param name="model">The prize model with the data to be inserted.</param>
+        /// <returns>The prize that was inserted with its id filled.</returns>
         public PrizeModel CreatePrize(PrizeModel model)
         {
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString("Tournaments")))

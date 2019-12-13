@@ -22,7 +22,6 @@ namespace TrackerUI
         {
             InitializeComponent();
             WireUpLists();
-            selectTeamMemberDropDown.SelectedItem = null;
         }
 
         // TODO: Implement functionality on clicking the Add Member button
@@ -45,6 +44,7 @@ namespace TrackerUI
             selectTeamMemberDropDown.DataSource = null;
             selectTeamMemberDropDown.DataSource = availableMembers;
             selectTeamMemberDropDown.DisplayMember = "FullName";
+            selectTeamMemberDropDown.SelectedItem = null;
 
             // Set list box members
             teamMembersListBox.DataSource = null;
@@ -66,7 +66,7 @@ namespace TrackerUI
                 };
                 GlobalConfig.Connections.CreatePerson(p);
 
-                // add the new person to the team
+                // add the new person to the team and refresh the list box
                 selectedTeam.Add(p);
                 WireUpLists();
 
