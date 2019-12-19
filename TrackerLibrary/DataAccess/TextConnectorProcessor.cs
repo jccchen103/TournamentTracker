@@ -39,7 +39,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
         }
 
         /// <summary>
-        /// Convert the Prizes data lines from a text file to a list of PrizeModel.
+        /// Convert the Prizes data from a text file to a list of PrizeModel.
         /// </summary>
         /// <param name="prizeFileLines">The lines of a text file with Prizes data.</param>
         /// <returns>The resulting list of PrizeModel.</returns>
@@ -80,6 +80,48 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             foreach (PrizeModel p in prizes)
             {
                 lines.Add($"{p.Id},{p.PlaceNumber},{p.PlaceName},{p.PrizeAmount},{p.PrizePercentage}");
+            }
+
+            // write all lines in the list to the text file
+            File.WriteAllLines(fileName.FullFilePath(), lines);
+        }
+
+        /// <summary>
+        /// Convert the data lines from a People text file to a list of PersonModel.
+        /// </summary>
+        /// <param name="peopleFileLines">The lines of a text file with People data.</param>
+        /// <returns>The list of PersonModel.</returns>
+        public static List<PersonModel> ConvertToPersonModels(this List<string> peopleFileLines)
+        {
+            List<PersonModel> output = new List<PersonModel>();
+
+            foreach (string line in peopleFileLines)
+            {
+                string[] cols = line.Split(',');
+
+                // create a PersonModel with the data from line
+                PersonModel p = new PersonModel
+                {
+                    Id = int.Parse(cols[0]),
+                    FirstName = cols[1],
+                    LastName = cols[2],
+                    Email = cols[3]
+                };
+
+                output.Add(p);
+            }
+
+            return output;
+        }
+        
+        public static void SaveToPeopleFile(this List<PersonModel> people, string fileName)
+        {
+            // convert prize models to lines in a list
+            List<string> lines = new List<string>();
+
+            foreach (PersonModel p in people)
+            {
+                lines.Add($"{p.Id},{p.FirstName},{p.LastName},{p.Email}");
             }
 
             // write all lines in the list to the text file

@@ -219,6 +219,7 @@
             this.createTeamButton.TabIndex = 17;
             this.createTeamButton.Text = "Create Team";
             this.createTeamButton.UseVisualStyleBackColor = true;
+            this.createTeamButton.Click += new System.EventHandler(this.CreateTeamButton_Click);
             // 
             // deleteMembersButton
             // 
@@ -243,9 +244,9 @@
             this.currentTeamLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
             this.currentTeamLabel.Location = new System.Drawing.Point(474, 94);
             this.currentTeamLabel.Name = "currentTeamLabel";
-            this.currentTeamLabel.Size = new System.Drawing.Size(174, 37);
+            this.currentTeamLabel.Size = new System.Drawing.Size(292, 37);
             this.currentTeamLabel.TabIndex = 14;
-            this.currentTeamLabel.Text = "Current Team";
+            this.currentTeamLabel.Text = "Current Team Members";
             // 
             // teamMembersListBox
             // 

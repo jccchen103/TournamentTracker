@@ -24,7 +24,6 @@ namespace TrackerUI
             WireUpLists();
         }
 
-        // TODO: Implement functionality on clicking the Add Member button
         private void AddMemberButton_Click(object sender, EventArgs e)
         {
             // Move selected person from the drop down to the list box
@@ -97,13 +96,16 @@ namespace TrackerUI
         /// <returns>Whether the inputs were valid.</returns>
         private bool ValidInputs(out int errorCode)
         {
+            firstNameValue.Text = firstNameValue.Text.Trim();
+            lastNameValue.Text = lastNameValue.Text.Trim();
+
             if (firstNameValue.Text.Length == 0 || 
                 lastNameValue.Text.Length == 0 || emailValue.Text.Length == 0) {
                 errorCode = 1;
                 return false;   // no empty fields allowed
             }
 
-            // check if email address format is valid
+            // check if email address format is valid (from Microsoft docs)
             bool isEmail = Regex.IsMatch(emailValue.Text,
                         @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
                         @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
@@ -131,6 +133,18 @@ namespace TrackerUI
             }
 
             WireUpLists();
+        }
+
+        private void CreateTeamButton_Click(object sender, EventArgs e)
+        {
+            // validate: team name, selectedTeam.size > 0
+
+            // TeamModel t = new TeamModel(name = teamNameValue.Text, members = selectedTeam)
+            // CreateTeam(t); -- add team to db, set id, and link t.Id with p.Id
+
+            // pass team t to the caller form
+
+            // close this form
         }
     }
 }

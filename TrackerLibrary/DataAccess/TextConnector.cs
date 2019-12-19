@@ -12,38 +12,48 @@ namespace TrackerLibrary.DataAccess
     {
         // text files for text-based database
         private const string PrizesFile = "PrizeModels.csv";
-
-        public PersonModel CreatePerson(PersonModel model)
-        {
-            throw new NotImplementedException();    // TODO: add person data to text file
-        }
-
-        //private const string PeopleFile = "PeopleModels.csv";
+        private const string PeopleFile = "PersonModels.csv";
         //private const string TeamsFile = "TeamsModels.csv";
         //private const string TournamentsFile = "TournamentsModels.csv";
         //private const string MatchupFile = "MatchupModels.csv";
         //private const string MatchupEntriesFile = "MatchupEntriesModels.csv";
 
 
+        public PersonModel CreatePerson(PersonModel model)
+        {
+            // read file with people data
+            List<PersonModel> people = PeopleFile.FullFilePath().LoadFile().ConvertToPersonModels();
+
+            // add the new person model with the next id number
+            int nextId = people.Count() > 0 ? people.OrderByDescending(x => x.Id).First().Id + 1 : 1;
+            model.Id = nextId;
+            people.Add(model);
+
+            // convert person models to strings and save to the people text file
+            people.SaveToPeopleFile(PeopleFile);
+
+            return model; 
+        }
+
         public PrizeModel CreatePrize(PrizeModel model)
         {
-            // load the text file (a list of string)
+            // load the text file and convert to prize models
             List<PrizeModel> prizes = PrizesFile.FullFilePath().LoadFile().ConvertToPrizeModels();
-            // find the next id (max id + 1)
+
+            // add the new record with the next id (max id + 1)
             int nextId = prizes.Count() > 0 ? prizes.OrderByDescending(x => x.Id).First().Id + 1 : 1;
-            // add the new record with the next id
             model.Id = nextId;
             prizes.Add(model);
+
             // convert prizes to strings and save to the prizes text file
             prizes.SaveToPrizesFile(PrizesFile);
 
             return model;
         }
 
-        // TODO: implement GetPeople() for text connector
         public List<PersonModel> GetPeople()
         {
-            throw new NotImplementedException();
+            return PeopleFile.FullFilePath().LoadFile().ConvertToPersonModels();
         }
     }
 }
