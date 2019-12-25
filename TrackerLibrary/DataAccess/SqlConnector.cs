@@ -15,6 +15,8 @@ namespace TrackerLibrary.DataAccess
     /// </summary>
     public class SqlConnector : IDataConnection
     {
+        private const string db = "Tournaments";
+
         /// <summary>
         /// Saves a person to the database.
         /// </summary>
@@ -22,7 +24,7 @@ namespace TrackerLibrary.DataAccess
         /// <returns>The person model that was inserted with its id filled.</returns>
         public PersonModel CreatePerson(PersonModel model)
         {
-            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString("Tournaments")))
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
                 var p = new DynamicParameters();
                 p.Add("p_first_name", model.FirstName);
@@ -45,7 +47,7 @@ namespace TrackerLibrary.DataAccess
         /// <returns>The prize that was inserted with its id filled.</returns>
         public PrizeModel CreatePrize(PrizeModel model)
         {
-            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString("Tournaments")))
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
                 var p = new DynamicParameters();
                 p.Add("p_place_number", model.PlaceNumber);
@@ -65,7 +67,7 @@ namespace TrackerLibrary.DataAccess
         public List<PersonModel> GetPeople()
         {
             List<PersonModel> output = new List<PersonModel>();
-            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString("Tournaments")))
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
                 output = connection.Query<PersonModel>("people_all").ToList();
             }

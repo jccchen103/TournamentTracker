@@ -15,13 +15,20 @@ namespace TrackerUI
 {
     public partial class CreateTeamForm : Form
     {
-        private List<PersonModel> availableMembers = GlobalConfig.Connections.GetPeople();
-        private List<PersonModel> selectedTeam = new List<PersonModel>();
-
         public CreateTeamForm()
         {
             InitializeComponent();
-            WireUpLists();
+
+            // set up drop down list
+            List<PersonModel> available = GlobalConfig.Connections.GetPeople();
+            foreach (PersonModel p in available)
+            {
+                selectTeamMemberDropDown.Items.Add(p);
+            }
+
+            // just display the full name of the people
+            selectTeamMemberDropDown.DisplayMember = "FullName";
+            teamMembersListBox.DisplayMember = "FullName";
         }
 
         private void AddMemberButton_Click(object sender, EventArgs e)
@@ -30,26 +37,11 @@ namespace TrackerUI
             PersonModel selected = (PersonModel)selectTeamMemberDropDown.SelectedItem;
             if (!(selected is null))
             {
-                selectedTeam.Add(selected);
-                availableMembers.Remove(selected);
-
-                WireUpLists();
+                // move item selected in the drop down to the list box
+                selectTeamMemberDropDown.Items.Remove(selected);
+                teamMembersListBox.Items.Add(selected);
             }
-        }
-
-        private void WireUpLists()
-        {
-            // Set available members for drop down
-            selectTeamMemberDropDown.DataSource = null;
-            selectTeamMemberDropDown.DataSource = availableMembers;
-            selectTeamMemberDropDown.DisplayMember = "FullName";
-            selectTeamMemberDropDown.SelectedItem = null;
-
-            // Set list box members
-            teamMembersListBox.DataSource = null;
-            teamMembersListBox.DataSource = selectedTeam;
-            teamMembersListBox.DisplayMember = "FullName";
-
+            selectTeamMemberDropDown.Text = "";
         }
 
         private void CreateMemberButton_Click(object sender, EventArgs e)
@@ -65,9 +57,8 @@ namespace TrackerUI
                 };
                 GlobalConfig.Connections.CreatePerson(p);
 
-                // add the new person to the team and refresh the list box
-                selectedTeam.Add(p);
-                WireUpLists();
+                // add the new person to the list box
+                teamMembersListBox.Items.Add(p);
 
                 // clear input fields
                 firstNameValue.Text = "";
@@ -126,13 +117,13 @@ namespace TrackerUI
         private void DeleteMembersButton_Click(object sender, EventArgs e)
         {
             var peopleToRemove = teamMembersListBox.SelectedItems;
-            foreach (PersonModel p in peopleToRemove)
-            {
-                selectedTeam.Remove(p);
-                availableMembers.Add(p);
-            }
 
-            WireUpLists();
+            while (peopleToRemove.Count > 0)
+            {
+                PersonModel p = (PersonModel)peopleToRemove[0];
+                teamMembersListBox.Items.Remove(p);
+                selectTeamMemberDropDown.Items.Add(p);
+            }
         }
 
         private void CreateTeamButton_Click(object sender, EventArgs e)
