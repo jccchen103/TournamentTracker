@@ -64,6 +64,40 @@ namespace TrackerLibrary.DataAccess
             return model;
         }
 
+        /// <summary>
+        /// Saves a team and connects the team members to their team in the database.
+        /// </summary>
+        /// <param name="model">The team with team members to the inserted.</param>
+        /// <returns>The passed in team model with its team id set.</returns>
+        public TeamModel CreateTeam(TeamModel model)
+        {
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
+            {
+                // insert team name and set the team id
+                var p = new DynamicParameters();
+                p.Add("p_team_name", model.TeamName);
+                p.Add("@p_id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                connection.Execute("teams_insert", p, commandType: CommandType.StoredProcedure);
+
+                model.Id = p.Get<int>("@p_id");
+
+                // insert each team member with the team id that was just set
+                foreach (PersonModel member in model.TeamMembers)
+                {
+                    p = new DynamicParameters();    // overwrite p
+                    p.Add("p_team_id", model.Id);
+                    p.Add("p_person_id", member.Id);
+
+                    connection.Execute("team_members_insert", p, commandType: CommandType.StoredProcedure);
+                }
+
+                return model;
+            }
+
+            
+        }
+
         public List<PersonModel> GetPeople()
         {
             List<PersonModel> output = new List<PersonModel>();

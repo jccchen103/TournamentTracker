@@ -46,7 +46,7 @@ namespace TrackerUI
 
         private void CreateMemberButton_Click(object sender, EventArgs e)
         {
-            if (ValidInputs(out int errCode))
+            if (ValidPersonInputs(out int errCode))
             {
                 // create person model from input data and add to db
                 PersonModel p = new PersonModel
@@ -85,7 +85,7 @@ namespace TrackerUI
         ///     2 = The format of the email address is invalid.
         /// </param>
         /// <returns>Whether the inputs were valid.</returns>
-        private bool ValidInputs(out int errorCode)
+        private bool ValidPersonInputs(out int errorCode)
         {
             firstNameValue.Text = firstNameValue.Text.Trim();
             lastNameValue.Text = lastNameValue.Text.Trim();
@@ -130,12 +130,39 @@ namespace TrackerUI
         {
             // validate: team name, selectedTeam.size > 0
 
-            // TeamModel t = new TeamModel(name = teamNameValue.Text, members = selectedTeam)
-            // CreateTeam(t); -- add team to db, set id, and link t.Id with p.Id
+            if (ValidTeamInputs())
+            {
+                TeamModel t = new TeamModel
+                {
+                    TeamName = teamNameValue.Text,
+                    TeamMembers = teamMembersListBox.Items.Cast<PersonModel>().ToList()
+                };
+                GlobalConfig.Connections.CreateTeam(t); 
+            }
+            else
+            {
+                MessageBox.Show("You have missing team information. Please check and try again.", "Error: Invalid Team");
+            }
 
             // pass team t to the caller form
 
-            // close this form
+            // TODO: either close or reset this form
+        }
+
+        private bool ValidTeamInputs()
+        {
+            teamNameValue.Text = teamNameValue.Text.Trim();
+            if (teamNameValue.Text.Length == 0)
+            {
+                return false;
+            }
+            
+            if (teamMembersListBox.Items.Count == 0)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
