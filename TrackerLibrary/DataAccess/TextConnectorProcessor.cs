@@ -130,7 +130,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
         }
 
         /// <summary>
-        /// Converts prize models to a list of string and writes them to the specified csv file.
+        /// Converts prize models to a list of string and writes it to the specified csv file.
         /// </summary>
         /// <param name="prizes">The list of prize models to be saved.</param>
         /// <param name="fileName">Name of file to be written to.</param>
@@ -149,7 +149,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
         }
 
         /// <summary>
-        /// Saves person models to the specified csv file.
+        /// Saves person models to a csv file with the specified file name.
         /// </summary>
         /// <param name="people">The list of person models to be saved.</param>
         /// <param name="fileName">Name of the file that will be written to.</param>
@@ -168,9 +168,9 @@ namespace TrackerLibrary.DataAccess.TextHelpers
         }
 
         /// <summary>
-        /// Saves team models to a csv file with the given name.
+        /// Saves team models to a csv file with the given file name.
         /// A team model will be recorded in the following format: 
-        /// team id, team name, person id's of team members separated by the pipe.
+        /// team id, team name, team members' person id separated by the pipe.
         /// </summary>
         /// <param name="teams">The list of team models to be saved.</param>
         /// <param name="fileName">Name of the csv file to be written to.</param>

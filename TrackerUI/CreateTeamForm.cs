@@ -15,6 +15,8 @@ namespace TrackerUI
 {
     public partial class CreateTeamForm : Form
     {
+        //private ITeamRequestor callingForm;
+
         public CreateTeamForm()
         {
             InitializeComponent();
@@ -128,8 +130,6 @@ namespace TrackerUI
 
         private void CreateTeamButton_Click(object sender, EventArgs e)
         {
-            // validate: team name, selectedTeam.size > 0
-
             if (ValidTeamInputs())
             {
                 TeamModel t = new TeamModel
@@ -154,12 +154,12 @@ namespace TrackerUI
             teamNameValue.Text = teamNameValue.Text.Trim();
             if (teamNameValue.Text.Length == 0)
             {
-                return false;
+                return false;   // no team name
             }
             
             if (teamMembersListBox.Items.Count == 0)
             {
-                return false;
+                return false;   // no team member selected
             }
 
             return true;
