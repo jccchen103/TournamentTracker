@@ -180,10 +180,8 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
             foreach (TeamModel t in teams)
             {
-                string record = $"{t.Id},{t.TeamName},";
-                // TODO: convert team members to pipe separaed id strings and add to record
                 List<string> memberIds = t.TeamMembers.Select(x => x.Id.ToString()).ToList();
-                record += string.Join("|", memberIds);
+                string record = $"{t.Id},{t.TeamName},{string.Join("|", memberIds)}";
                 lines.Add(record);
             }
 
