@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TrackerLibrary;
+using TrackerLibrary.Models;
 
 namespace TrackerUI
 {
@@ -15,21 +17,17 @@ namespace TrackerUI
         public CreateTournamentForm()
         {
             InitializeComponent();
-        }
 
-        private void entryFeeValue_TextChanged(object sender, EventArgs e)
-        {
+            // link select team drop down list
+            List<TeamModel> teams = GlobalConfig.Connections.GetTeams();
+            foreach (TeamModel t in teams)
+            {
+                selectTeamDropDown.Items.Add(t);
+            }
 
-        }
-
-        private void CreateTournamentForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void roundLabel_Click(object sender, EventArgs e)
-        {
-
+            // just display the team name of a team model
+            selectTeamDropDown.DisplayMember = "TeamName";
+            tournamentPlayersListBox.DisplayMember = "TeamName";
         }
 
         private void createTournamentButton_Click(object sender, EventArgs e)

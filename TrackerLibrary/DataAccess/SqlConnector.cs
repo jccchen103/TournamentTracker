@@ -93,9 +93,7 @@ namespace TrackerLibrary.DataAccess
                 }
 
                 return model;
-            }
-
-            
+            }            
         }
 
         public List<PersonModel> GetPeople()
@@ -105,7 +103,28 @@ namespace TrackerLibrary.DataAccess
             {
                 output = connection.Query<PersonModel>("people_all").ToList();
             }
+            return output;
+        }
 
+        public List<TeamModel> GetTeams()
+        {
+            List<TeamModel> output = new List<TeamModel>();
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
+            {
+                output = connection.Query<TeamModel>("teams_all").ToList();
+
+                // fill the team members of each team
+                Dapper.DynamicParameters p;
+                foreach (TeamModel t in output)
+                {
+                    p = new DynamicParameters();
+                    p.Add("p_team_id", t.Id);
+
+                    t.TeamMembers = connection.Query<PersonModel>(
+                            "team_members_by_team", p, commandType: CommandType.StoredProcedure).ToList();
+                }
+            }
+            
             return output;
         }
     }

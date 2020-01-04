@@ -84,7 +84,6 @@
             this.entryFeeValue.Size = new System.Drawing.Size(105, 35);
             this.entryFeeValue.TabIndex = 4;
             this.entryFeeValue.Text = "0";
-            this.entryFeeValue.TextChanged += new System.EventHandler(this.entryFeeValue_TextChanged);
             // 
             // entryFeeLabel
             // 
@@ -115,7 +114,6 @@
             this.selectTeamLabel.Size = new System.Drawing.Size(156, 37);
             this.selectTeamLabel.TabIndex = 5;
             this.selectTeamLabel.Text = "Select Team";
-            this.selectTeamLabel.Click += new System.EventHandler(this.roundLabel_Click);
             // 
             // createTeamLink
             // 
@@ -273,7 +271,6 @@
             this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.Name = "CreateTournamentForm";
             this.Text = "Create Tournament";
-            this.Load += new System.EventHandler(this.CreateTournamentForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
