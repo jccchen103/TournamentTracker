@@ -18,7 +18,12 @@ namespace TrackerUI
         {
             InitializeComponent();
 
-            // link select team drop down list
+            InitializeLists();
+        }
+
+        private void InitializeLists()
+        {
+            // add all teams in the database to the select team drop down
             List<TeamModel> teams = GlobalConfig.Connections.GetTeams();
             foreach (TeamModel t in teams)
             {
