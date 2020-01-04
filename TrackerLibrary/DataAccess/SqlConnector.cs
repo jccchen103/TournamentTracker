@@ -18,11 +18,10 @@ namespace TrackerLibrary.DataAccess
         private const string db = "Tournaments";
 
         /// <summary>
-        /// Saves a person to the database.
+        /// Sets the id of a person model and saves the person to the database.
         /// </summary>
         /// <param name="model">The person model with the data to be inserted.</param>
-        /// <returns>The person model that was inserted with its id filled.</returns>
-        public PersonModel CreatePerson(PersonModel model)
+        public void CreatePerson(PersonModel model)
         {
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
@@ -36,16 +35,13 @@ namespace TrackerLibrary.DataAccess
 
                 model.Id = p.Get<int>("@p_id");
             }
-
-            return model;
         }
 
         /// <summary>
-        /// Saves a prize to the database.
+        /// Sets the id of a prize model and saves the prize to the database.
         /// </summary>
         /// <param name="model">The prize model with the data to be inserted.</param>
-        /// <returns>The prize that was inserted with its id filled.</returns>
-        public PrizeModel CreatePrize(PrizeModel model)
+        public void CreatePrize(PrizeModel model)
         {
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
@@ -60,16 +56,14 @@ namespace TrackerLibrary.DataAccess
 
                 model.Id = p.Get<int>("@p_id");
             }
-
-            return model;
         }
 
         /// <summary>
-        /// Saves a team and connects the team members to their team in the database.
+        /// Sets the id of a team model and saves the team to the database, 
+        /// connecting the team members to their team in the database.
         /// </summary>
         /// <param name="model">The team with team members to the inserted.</param>
-        /// <returns>The passed in team model with its team id set.</returns>
-        public TeamModel CreateTeam(TeamModel model)
+        public void CreateTeam(TeamModel model)
         {
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
@@ -91,8 +85,6 @@ namespace TrackerLibrary.DataAccess
 
                     connection.Execute("team_members_insert", p, commandType: CommandType.StoredProcedure);
                 }
-
-                return model;
             }            
         }
 
