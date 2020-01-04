@@ -52,5 +52,14 @@ namespace TrackerLibrary.Models
             double.TryParse(prizePercentage, out double prizePercentageValue);
             PrizePercentage = prizePercentageValue;
         }
+
+        public string PrizeDisplay
+        {
+            get {
+                string display = $"{PlaceName}: ";
+                display += PrizeAmount == 0 ? $"{PrizeAmount}" : $"{PrizePercentage} %";
+                return display; 
+            }
+        }
     }
 }

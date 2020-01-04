@@ -30,15 +30,31 @@ namespace TrackerUI
                 selectTeamDropDown.Items.Add(t);
             }
 
-            // just display the team name of a team model
+            // just display the name of the models
             selectTeamDropDown.DisplayMember = "TeamName";
             tournamentPlayersListBox.DisplayMember = "TeamName";
+            prizesListBox.DisplayMember = "PrizeDisplay";
         }
 
         private void CreateTournamentButton_Click(object sender, EventArgs e)
         {
             // TODO: wire up the create tournament button
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Move the selected team from the drop down to the tournament players list box.
+        /// </summary>
+        private void AddTeamButton_Click(object sender, EventArgs e)
+        {
+            TeamModel selected = (TeamModel)selectTeamDropDown.SelectedItem;
+            if (!(selected is null))
+            {
+                // move item selected in the drop down to the list box
+                selectTeamDropDown.Items.Remove(selected);
+                tournamentPlayersListBox.Items.Add(selected);
+            }
+            selectTeamDropDown.Text = "";
         }
     }
 }
