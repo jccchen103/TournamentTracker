@@ -30,9 +30,10 @@ namespace TrackerUI
             tournamentPlayersListBox.DisplayMember = "TeamName";
         }
 
-        private void createTournamentButton_Click(object sender, EventArgs e)
+        private void CreateTournamentButton_Click(object sender, EventArgs e)
         {
-
+            // TODO: wire up the create tournament button
+            throw new NotImplementedException();
         }
     }
 }
