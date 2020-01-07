@@ -12,7 +12,7 @@ using TrackerLibrary.Models;
 
 namespace TrackerUI
 {
-    public partial class CreateTournamentForm : Form
+    public partial class CreateTournamentForm : Form, IPrizeRequestor
     {
         public CreateTournamentForm()
         {
@@ -55,6 +55,22 @@ namespace TrackerUI
                 tournamentPlayersListBox.Items.Add(selected);
             }
             selectTeamDropDown.Text = "";
+        }
+
+        private void CreatePrizeButton_Click(object sender, EventArgs e)
+        {
+            // call the create prize form
+            CreatePrizeForm form = new CreatePrizeForm(this);
+            form.Show();
+        }
+
+        /// <summary>
+        /// Add the created prize to the prizes list box.
+        /// </summary>
+        /// <param name="model">A prize model from the Create Prize form.</param>
+        public void PrizeComplete(PrizeModel model)
+        {
+            prizesListBox.Items.Add(model);
         }
     }
 }

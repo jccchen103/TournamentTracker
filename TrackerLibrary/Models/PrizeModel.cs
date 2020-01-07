@@ -57,7 +57,7 @@ namespace TrackerLibrary.Models
         {
             get {
                 string display = $"{PlaceName}: ";
-                display += PrizeAmount == 0 ? $"{PrizeAmount}" : $"{PrizePercentage} %";
+                display += PrizeAmount > 0 ? $"${PrizeAmount}" : $"{PrizePercentage}%";
                 return display; 
             }
         }

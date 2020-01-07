@@ -155,6 +155,7 @@
             this.createPrizeButton.TabIndex = 12;
             this.createPrizeButton.Text = "Create Prize";
             this.createPrizeButton.UseVisualStyleBackColor = true;
+            this.createPrizeButton.Click += new System.EventHandler(this.CreatePrizeButton_Click);
             // 
             // tournamentPlayersListBox
             // 
