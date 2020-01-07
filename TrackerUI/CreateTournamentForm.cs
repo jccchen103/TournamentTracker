@@ -12,7 +12,7 @@ using TrackerLibrary.Models;
 
 namespace TrackerUI
 {
-    public partial class CreateTournamentForm : Form, IPrizeRequestor
+    public partial class CreateTournamentForm : Form, IPrizeRequestor, ITeamRequestor
     {
         public CreateTournamentForm()
         {
@@ -72,5 +72,17 @@ namespace TrackerUI
         {
             prizesListBox.Items.Add(model);
         }
+
+        private void CreateTeamLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            CreateTeamForm form = new CreateTeamForm(this);
+            form.Show();
+        }
+
+        public void TeamComplete(TeamModel model)
+        {
+            tournamentPlayersListBox.Items.Add(model);
+        }
+
     }
 }

@@ -15,12 +15,17 @@ namespace TrackerUI
 {
     public partial class CreateTeamForm : Form
     {
-        //private ITeamRequestor callingForm;
+        private ITeamRequestor callingForm;
 
-        public CreateTeamForm()
+        public CreateTeamForm(ITeamRequestor caller)
         {
             InitializeComponent();
+            callingForm = caller;
+            InitializeLists();
+        }
 
+        private void InitializeLists()
+        {
             // set up drop down list
             List<PersonModel> available = GlobalConfig.Connections.GetPeople();
             foreach (PersonModel p in available)
@@ -137,16 +142,14 @@ namespace TrackerUI
                     TeamName = teamNameValue.Text,
                     TeamMembers = teamMembersListBox.Items.Cast<PersonModel>().ToList()
                 };
-                GlobalConfig.Connections.CreateTeam(t); 
+                GlobalConfig.Connections.CreateTeam(t);
+                callingForm.TeamComplete(t);
+                this.Close();
             }
             else
             {
                 MessageBox.Show("You have missing team information. Please check and try again.", "Error: Invalid Team");
             }
-
-            // pass team t to the caller form
-
-            // TODO: either close or reset this form
         }
 
         private bool ValidTeamInputs()
