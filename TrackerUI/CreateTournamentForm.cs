@@ -33,7 +33,7 @@ namespace TrackerUI
         private void CreateTournamentButton_Click(object sender, EventArgs e)
         {
             // TODO: wire up the create tournament button
-            throw new NotImplementedException();
+            AddPrizesToDB();
         }
 
         /// <summary>
@@ -97,6 +97,18 @@ namespace TrackerUI
             {
                 prizesListBox.Items.Remove(p);
             }
+        }
+
+        /// <summary>
+        /// Save the prizes in the prizes list box to the database.
+        /// </summary>
+        private void AddPrizesToDB()
+        {
+            foreach (PrizeModel model in prizesListBox.Items)
+            {
+                GlobalConfig.Connections.CreatePrize(model);
+            }
+
         }
     }
 }

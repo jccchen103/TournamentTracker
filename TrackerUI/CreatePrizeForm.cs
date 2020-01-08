@@ -23,6 +23,12 @@ namespace TrackerUI
             callingForm = caller;
         }
 
+        /// <summary>
+        /// If all inputs are valid, create the specified prize model and 
+        /// send it to the calling form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CreatePrizeButton_Click(object sender, EventArgs e)
         {
             if (ValidInputs())
@@ -33,9 +39,6 @@ namespace TrackerUI
                     placeNameValue.Text,
                     prizeAmountValue.Text,
                     prizePercentageValue.Text);
-
-                // add prize model to the data source
-                GlobalConfig.Connections.CreatePrize(model);
 
                 // return model to caller and close this prize form
                 callingForm.PrizeComplete(model);
@@ -88,6 +91,5 @@ namespace TrackerUI
             
             return output;
         }
-
     }
 }
