@@ -121,7 +121,7 @@ namespace TrackerUI
         /// <summary>
         /// Move the people selected in the list box to the drop-down menu
         /// </summary>
-        private void DeleteMembersButton_Click(object sender, EventArgs e)
+        private void RemoveMembersButton_Click(object sender, EventArgs e)
         {
             var peopleToRemove = teamMembersListBox.SelectedItems;
 

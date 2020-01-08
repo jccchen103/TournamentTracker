@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrackerLibrary;
 using TrackerLibrary.Models;
@@ -84,5 +78,25 @@ namespace TrackerUI
             tournamentPlayersListBox.Items.Add(model);
         }
 
+        private void RemovePlayersButton_Click(object sender, EventArgs e)
+        {
+            var teamsToRemove = tournamentPlayersListBox.SelectedItems;
+
+            while (teamsToRemove.Count > 0)
+            {
+                TeamModel t = (TeamModel)teamsToRemove[0];
+                tournamentPlayersListBox.Items.Remove(t);
+                selectTeamDropDown.Items.Add(t);
+            }
+        }
+
+        private void RemovePrizesButton_Click(object sender, EventArgs e)
+        {
+            PrizeModel p = (PrizeModel)prizesListBox.SelectedItem;
+            if (p != null)
+            {
+                prizesListBox.Items.Remove(p);
+            }
+        }
     }
 }
