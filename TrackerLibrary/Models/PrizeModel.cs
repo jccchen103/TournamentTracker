@@ -37,6 +37,11 @@ namespace TrackerLibrary.Models
         /// </summary>
         public double PrizePercentage { get; set; }
 
+        /// <summary>
+        /// The tournament this prize is given in.
+        /// </summary>
+        public int TournamentId { get; set; }
+
         public PrizeModel() { }
 
         public PrizeModel(string placeNumber, string placeName, string prizeAmount, string prizePercentage)

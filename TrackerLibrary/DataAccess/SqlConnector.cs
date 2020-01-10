@@ -26,14 +26,14 @@ namespace TrackerLibrary.DataAccess
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
                 var p = new DynamicParameters();
-                p.Add("p_first_name", model.FirstName);
-                p.Add("p_last_name", model.LastName);
-                p.Add("p_email", model.Email);
-                p.Add("@p_id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                p.Add("f_name", model.FirstName);
+                p.Add("l_name", model.LastName);
+                p.Add("email_address", model.Email);
+                p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 connection.Execute("people_insert", p, commandType: CommandType.StoredProcedure);
 
-                model.Id = p.Get<int>("@p_id");
+                model.Id = p.Get<int>("@id");
             }
         }
 
@@ -48,13 +48,14 @@ namespace TrackerLibrary.DataAccess
                 var p = new DynamicParameters();
                 p.Add("p_place_number", model.PlaceNumber);
                 p.Add("p_place_name", model.PlaceName);
-                p.Add("p_prize_amount", model.PrizeAmount);
+                p.Add("p_amount", model.PrizeAmount);
                 p.Add("p_percentage", model.PrizePercentage);
-                p.Add("@p_id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                p.Add("p_tournament_id", model.TournamentId);
+                p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 connection.Execute("prizes_insert", p, commandType: CommandType.StoredProcedure);
 
-                model.Id = p.Get<int>("@p_id");
+                model.Id = p.Get<int>("@id");
             }
         }
 
@@ -70,11 +71,11 @@ namespace TrackerLibrary.DataAccess
                 // insert team name and set the team id
                 var p = new DynamicParameters();
                 p.Add("p_team_name", model.TeamName);
-                p.Add("@p_id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 connection.Execute("teams_insert", p, commandType: CommandType.StoredProcedure);
 
-                model.Id = p.Get<int>("@p_id");
+                model.Id = p.Get<int>("@id");
 
                 // insert each team member with the team id that was just set
                 foreach (PersonModel member in model.TeamMembers)
@@ -86,6 +87,11 @@ namespace TrackerLibrary.DataAccess
                     connection.Execute("team_members_insert", p, commandType: CommandType.StoredProcedure);
                 }
             }            
+        }
+
+        public void CreateTournament(TournamentModel model)
+        {
+            throw new NotImplementedException();
         }
 
         public List<PersonModel> GetPeople()
@@ -110,7 +116,7 @@ namespace TrackerLibrary.DataAccess
                 foreach (TeamModel t in output)
                 {
                     p = new DynamicParameters();
-                    p.Add("p_team_id", t.Id);
+                    p.Add("selected_team", t.Id);
 
                     t.TeamMembers = connection.Query<PersonModel>(
                             "team_members_by_team", p, commandType: CommandType.StoredProcedure).ToList();

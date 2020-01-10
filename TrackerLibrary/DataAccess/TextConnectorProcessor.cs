@@ -58,7 +58,8 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                     PlaceNumber = int.Parse(cols[1]),
                     PlaceName = cols[2],
                     PrizeAmount = decimal.Parse(cols[3]),
-                    PrizePercentage = double.Parse(cols[4])
+                    PrizePercentage = double.Parse(cols[4]),
+                    TournamentId = int.Parse(cols[5])
                 };
 
                 output.Add(p);
@@ -141,7 +142,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
             foreach (PrizeModel p in prizes)
             {
-                lines.Add($"{p.Id},{p.PlaceNumber},{p.PlaceName},{p.PrizeAmount},{p.PrizePercentage}");
+                lines.Add($"{p.Id},{p.PlaceNumber},{p.PlaceName},{p.PrizeAmount},{p.PrizePercentage},{p.TournamentId}");
             }
 
             // write all lines in the list to the text file

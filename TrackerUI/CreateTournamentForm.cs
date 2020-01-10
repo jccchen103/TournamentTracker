@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using TrackerLibrary;
 using TrackerLibrary.Models;
@@ -33,7 +34,50 @@ namespace TrackerUI
         private void CreateTournamentButton_Click(object sender, EventArgs e)
         {
             // TODO: wire up the create tournament button
-            AddPrizesToDB();
+            if (ValidateTournamentInfo())
+            {
+                // Create Tournament entry
+
+                TournamentModel t = new TournamentModel
+                {
+                    TournamentName = tournamentNameValue.Text,
+                    EnteredTeams = tournamentPlayersListBox.Items.Cast<TeamModel>().ToList()
+                };
+                GlobalConfig.Connections.CreateTournament(t);
+
+                // Create the prize entries
+                AddPrizesToDB(t.Id);
+                
+                // Create the team entries
+
+                // Create our matchups
+                //this.Close();
+            }
+            else
+            {
+                MessageBox.Show("You have invalid tournament information. Please check and try again.",
+                        "Error: Invalid Tournament", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool ValidateTournamentInfo()
+        {
+            tournamentNameValue.Text = tournamentNameValue.Text.Trim();
+            if (tournamentNameValue.Text.Length == 0) { 
+                return false; // the tournament must have a name
+            }
+            if (tournamentPlayersListBox.Items.Count < 2) { 
+                return false; // must have at least two tournament players
+            }
+
+            decimal entryFee;
+            bool entryFeeValid = decimal.TryParse(entryFeeValue.Text, out entryFee);
+            if (!entryFeeValid || entryFee < 0)
+            {
+                return false;   // entry fee is not a number or negative
+            }
+            
+            return true;
         }
 
         /// <summary>
@@ -102,10 +146,11 @@ namespace TrackerUI
         /// <summary>
         /// Save the prizes in the prizes list box to the database.
         /// </summary>
-        private void AddPrizesToDB()
+        private void AddPrizesToDB(int tournamentId)
         {
             foreach (PrizeModel model in prizesListBox.Items)
             {
+                model.TournamentId = tournamentId;
                 GlobalConfig.Connections.CreatePrize(model);
             }
 
