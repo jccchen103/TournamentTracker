@@ -86,12 +86,40 @@ namespace TrackerLibrary.DataAccess
 
                     connection.Execute("team_members_insert", p, commandType: CommandType.StoredProcedure);
                 }
-            }            
+            }
         }
 
         public void CreateTournament(TournamentModel model)
         {
-            throw new NotImplementedException();
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
+            {
+                // Create tournament entry
+                var p = new DynamicParameters();
+                p.Add("t_name", model.TournamentName);
+                p.Add("fee", model.EntryFee);
+                p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                connection.Execute("tournaments_insert", p, commandType: CommandType.StoredProcedure);
+
+                model.Id = p.Get<int>("@id");
+
+                // Create prizes for this tournament
+                foreach (PrizeModel prize in model.Prizes)
+                {
+                    prize.TournamentId = model.Id;
+                    CreatePrize(prize);
+                }
+
+                // Create all the team entries
+                foreach (TeamModel team in model.EnteredTeams)
+                {
+                    p = new DynamicParameters();
+                    p.Add("p_tournament_id", model.Id);
+                    p.Add("p_team_id", team.Id);
+
+                    connection.Execute("tournament_entries_insert", p, commandType: CommandType.StoredProcedure);
+                }
+            }
         }
 
         public List<PersonModel> GetPeople()

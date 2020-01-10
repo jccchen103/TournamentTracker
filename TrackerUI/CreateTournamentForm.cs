@@ -36,21 +36,17 @@ namespace TrackerUI
             // TODO: wire up the create tournament button
             if (ValidateTournamentInfo())
             {
-                // Create Tournament entry
-
-                TournamentModel t = new TournamentModel
+                TournamentModel tm = new TournamentModel
                 {
                     TournamentName = tournamentNameValue.Text,
-                    EnteredTeams = tournamentPlayersListBox.Items.Cast<TeamModel>().ToList()
+                    EntryFee = decimal.Parse(entryFeeValue.Text),
+                    EnteredTeams = tournamentPlayersListBox.Items.Cast<TeamModel>().ToList(),
+                    Prizes = prizesListBox.Items.Cast<PrizeModel>().ToList()
                 };
-                GlobalConfig.Connections.CreateTournament(t);
-
-                // Create the prize entries
-                AddPrizesToDB(t.Id);
-                
-                // Create the team entries
+                GlobalConfig.Connections.CreateTournament(tm);
 
                 // Create our matchups
+
                 //this.Close();
             }
             else
@@ -143,17 +139,14 @@ namespace TrackerUI
             }
         }
 
-        /// <summary>
-        /// Save the prizes in the prizes list box to the database.
-        /// </summary>
-        private void AddPrizesToDB(int tournamentId)
-        {
-            foreach (PrizeModel model in prizesListBox.Items)
-            {
-                model.TournamentId = tournamentId;
-                GlobalConfig.Connections.CreatePrize(model);
-            }
 
-        }
+        //private void AddPrizesToDB(int tournamentId)
+        //{
+        //    foreach (PrizeModel model in prizesListBox.Items)
+        //    {
+        //        model.TournamentId = tournamentId;
+        //        GlobalConfig.Connections.CreatePrize(model);
+        //    }
+        //}
     }
 }
