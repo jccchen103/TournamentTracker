@@ -33,7 +33,6 @@ namespace TrackerUI
 
         private void CreateTournamentButton_Click(object sender, EventArgs e)
         {
-            // TODO: wire up the create tournament button
             if (ValidateTournamentInfo())
             {
                 TournamentModel tm = new TournamentModel
@@ -45,7 +44,7 @@ namespace TrackerUI
                 };
                 GlobalConfig.Connections.CreateTournament(tm);
 
-                // Create our matchups
+                // TODO: Create our matchups
 
                 //this.Close();
             }

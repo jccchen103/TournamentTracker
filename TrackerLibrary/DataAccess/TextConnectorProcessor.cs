@@ -104,7 +104,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
         public static List<TeamModel> ConvertToTeamModels(this List<string> teamsFileLines, string peopleFileName)
         {
             List<TeamModel> output = new List<TeamModel>();
-            List<PersonModel> people = peopleFileName.FullFilePath().LoadFile().ConvertToPersonModels(); ;
+            List<PersonModel> people = peopleFileName.FullFilePath().LoadFile().ConvertToPersonModels();
 
             foreach (string line in teamsFileLines)
             {
@@ -125,6 +125,51 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 }
 
                 output.Add(t);
+            }
+
+            return output;
+        }
+
+        public static List<TournamentModel> ConvertToTournamentModels(
+            this List<string> fileLines, 
+            string teamsFileName, 
+            string peopleFileName,
+            string prizeFileName)
+        {
+            // id, TournamentName, EntryFee, pipe-separated team ids, pipe-separated prize ids, Rounds (id^id^id|id^id|id) 
+            List<TournamentModel> output = new List<TournamentModel>();
+            List<TeamModel> teams = teamsFileName.FullFilePath().LoadFile().ConvertToTeamModels(peopleFileName);
+            List<PrizeModel> prizes = prizeFileName.FullFilePath().LoadFile().ConvertToPrizeModels();
+
+            foreach (string line in fileLines)
+            {
+                string[] cols = line.Split(',');
+
+                TournamentModel tm = new TournamentModel
+                {
+                    Id = int.Parse(cols[0]),
+                    TournamentName = cols[1],
+                    EntryFee = decimal.Parse(cols[2])
+                };
+
+                string[] teamIds = cols[3].Split('|');
+                foreach (string id in teamIds)
+                {
+                    int idNum = int.Parse(id);
+                    tm.EnteredTeams.Add(teams.Where(x => x.Id == idNum).First());
+                }
+
+                string[] prizeIds = cols[4].Split('|');
+                foreach (string id in prizeIds)
+                {
+                    int idNum = int.Parse(id);
+                    tm.Prizes.Add(prizes.Where(x => x.Id == idNum).First());
+                }
+
+                //string[] rounds = cols[5].Split('|');
+                // TODO: Capture Rounds information
+
+                output.Add(tm);
             }
 
             return output;
@@ -187,6 +232,47 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             }
 
             File.WriteAllLines(fileName.FullFilePath(), lines);
+        }
+
+        public static void SaveToTournamentsFile(this List<TournamentModel> tournaments, string fileName)
+        {
+            List<string> lines = new List<string>();
+
+            foreach (TournamentModel tm in tournaments)
+            {
+                List<string> teamIds = tm.EnteredTeams.Select(x => x.Id.ToString()).ToList();
+                List<string> prizeIds = tm.Prizes.Select(x => x.Id.ToString()).ToList();
+                string record = $"{tm.Id},{tm.TournamentName},{tm.EntryFee}," +
+                        $"{string.Join("|", teamIds)},{string.Join("|", prizeIds)}," +
+                        $"{ConvertRoundListToString(tm.Rounds)}";
+                lines.Add(record);
+            }
+
+            File.WriteAllLines(fileName.FullFilePath(), lines);
+        }
+
+        /// <summary>
+        /// Convert the Rounds of a Tournament to a string of matchup ids,
+        /// in which each round is separated by '|', 
+        /// and each matchup id of a round is separated by '^'.
+        /// </summary>
+        /// <param name="rounds">The tournament rounds to be converted.</param>
+        /// <returns>A string of ids that represents the rounds of a tournament.</returns>
+        private static string ConvertRoundListToString(List<List<MatchupModel>> rounds)
+        {
+            if (rounds.Count == 0)
+            {
+                return "";
+            }
+
+            List<string> roundList = new List<string>();
+            foreach (List<MatchupModel> round in rounds)
+            {
+                List<string> matchupIds = round.Select(x => x.Id.ToString()).ToList();
+                roundList.Add(string.Join("^", matchupIds));
+            }
+
+            return string.Join("|", roundList);
         }
     }
 }

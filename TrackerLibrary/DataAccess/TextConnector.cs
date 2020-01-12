@@ -13,8 +13,8 @@ namespace TrackerLibrary.DataAccess
         // text files for text-based database
         private const string PrizesFile = "PrizeModels.csv";
         private const string PeopleFile = "PersonModels.csv";
-        private const string TeamsFile = "TeamsModels.csv";
-        private const string TournamentsFile = "TournamentsModels.csv";
+        private const string TeamsFile = "TeamModels.csv";
+        private const string TournamentsFile = "TournamentModels.csv";
         //private const string MatchupFile = "MatchupModels.csv";
         //private const string MatchupEntriesFile = "MatchupEntriesModels.csv";
 
@@ -62,7 +62,22 @@ namespace TrackerLibrary.DataAccess
 
         public void CreateTournament(TournamentModel model)
         {
-            throw new NotImplementedException();    // TODO: Implement CreateTournamnet for the Text Connector
+            List<TournamentModel> tournaments = TournamentsFile
+                .FullFilePath()
+                .LoadFile()
+                .ConvertToTournamentModels(TeamsFile, PeopleFile, PrizesFile);
+            int nextId = tournaments.Count() > 0 ? tournaments.OrderByDescending(x => x.Id).First().Id + 1 : 1;
+            model.Id = nextId;  // set id for this tournament
+
+            // save prizes for this tournament
+            foreach (PrizeModel prize in model.Prizes)
+            {
+                prize.TournamentId = model.Id;
+                CreatePrize(prize);
+            }
+
+            tournaments.Add(model);
+            tournaments.SaveToTournamentsFile(TournamentsFile);
         }
 
         public List<PersonModel> GetPeople()
