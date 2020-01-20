@@ -42,9 +42,10 @@ namespace TrackerUI
                     EnteredTeams = tournamentPlayersListBox.Items.Cast<TeamModel>().ToList(),
                     Prizes = prizesListBox.Items.Cast<PrizeModel>().ToList()
                 };
-                GlobalConfig.Connections.CreateTournament(tm);
 
-                // TODO: Create our matchups
+                TournamentLogic.CreateRounds(tm);
+
+                GlobalConfig.Connections.CreateTournament(tm);
 
                 //this.Close();
             }
