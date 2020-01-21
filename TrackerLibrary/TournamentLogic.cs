@@ -16,6 +16,9 @@ namespace TrackerLibrary
             // TODO: test CreateRounds method
         public static void CreateRounds(TournamentModel model)
         {
+            // must have at least 2 teams in a tournament for a match
+            if (model.EnteredTeams.Count < 2) { return; }
+
             List<TeamModel> randomizedTeams = RandomizeTeamOrder(model.EnteredTeams);
             int teamCount = randomizedTeams.Count;          // number of teams (excluding bys)
             int rounds = (int)Math.Ceiling(Math.Log(teamCount,2));

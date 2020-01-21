@@ -251,6 +251,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             File.WriteAllLines(fileName.FullFilePath(), lines);
         }
 
+        // TODO: Make sure rounds of a tournament model is saved properly
         /// <summary>
         /// Convert the Rounds of a Tournament to a string of matchup ids,
         /// in which each round is separated by '|', 

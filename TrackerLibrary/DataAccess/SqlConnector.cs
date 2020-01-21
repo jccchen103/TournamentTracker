@@ -68,7 +68,7 @@ namespace TrackerLibrary.DataAccess
         {
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
-                // insert team name and set the team id
+                // Insert team name and set the team id
                 var p = new DynamicParameters();
                 p.Add("p_team_name", model.TeamName);
                 p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
@@ -77,7 +77,7 @@ namespace TrackerLibrary.DataAccess
 
                 model.Id = p.Get<int>("@id");
 
-                // insert each team member with the team id that was just set
+                // Insert each team member with the team id that was just set
                 foreach (PersonModel member in model.TeamMembers)
                 {
                     p = new DynamicParameters();    // overwrite p
@@ -93,17 +93,65 @@ namespace TrackerLibrary.DataAccess
         {
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
-                // Create tournament entry
                 SaveTournament(model, connection);
 
-                // Create prizes for this tournament
                 SaveTournamentPrizes(model);
 
-                // Create all the team entries
                 SaveTournamentEntries(model, connection);
+
+                SaveTournamentRounds(model, connection);
             }
         }
 
+        private void SaveTournamentRounds(TournamentModel model, IDbConnection connection)
+        {
+            foreach (List<MatchupModel> round in model.Rounds)
+            {
+                foreach (MatchupModel matchup in round)
+                {
+                    var p = new DynamicParameters();
+                    p.Add("round", matchup.MatchupRound);
+                    p.Add("tournament", model.Id);
+                    p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                    connection.Execute("matchups_insert", p, commandType: CommandType.StoredProcedure);
+
+                    matchup.Id = p.Get<int>("@id");
+
+                    foreach (MatchupEntryModel entry in matchup.Entries)
+                    {
+                        p = new DynamicParameters();
+                        p.Add("matchup", matchup.Id);
+
+                        if (entry.ParentMatchup is null)
+                        {
+                            p.Add("parent", null);
+                        } 
+                        else
+                        {
+                            p.Add("parent", entry.ParentMatchup.Id);
+                        }
+                        
+                        if (entry.TeamCompeting is null)
+                        {
+                            p.Add("team_competing", null);
+                        }
+                        else
+                        {
+                            p.Add("team_competing", entry.TeamCompeting.Id);
+                        }
+
+                        connection.Execute("matchup_entries_insert", p, commandType: CommandType.StoredProcedure);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Save the entries of a given tournament.
+        /// </summary>
+        /// <param name="model">A tournament model with entries to be saved.</param>
+        /// <param name="connection">A connection to the database to be saved to.</param>
         private void SaveTournamentEntries(TournamentModel model, IDbConnection connection)
         {
             DynamicParameters p;
@@ -126,6 +174,11 @@ namespace TrackerLibrary.DataAccess
             }
         }
 
+        /// <summary>
+        /// Save a tournament and fill in the id property of the model.
+        /// </summary>
+        /// <param name="model">Model with tournament data and incomplete id property.</param>
+        /// <param name="connection">A connection to the database to be saved to.</param>
         private void SaveTournament(TournamentModel model, IDbConnection connection)
         {
             var p = new DynamicParameters();
@@ -155,7 +208,7 @@ namespace TrackerLibrary.DataAccess
             {
                 output = connection.Query<TeamModel>("teams_all").ToList();
 
-                // fill the team members of each team
+                // Fill the team members of each team
                 Dapper.DynamicParameters p;
                 foreach (TeamModel t in output)
                 {
