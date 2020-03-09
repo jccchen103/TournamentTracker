@@ -55,7 +55,6 @@
             this.headerLabel.Size = new System.Drawing.Size(207, 47);
             this.headerLabel.TabIndex = 0;
             this.headerLabel.Text = "Tournament:";
-            this.headerLabel.Click += new System.EventHandler(this.label1_Click);
             // 
             // tournamentName
             // 
@@ -119,7 +118,6 @@
             this.teamOneName.Size = new System.Drawing.Size(215, 37);
             this.teamOneName.TabIndex = 6;
             this.teamOneName.Text = "<Team 1 Name>";
-            this.teamOneName.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // scoreOneLabel
             // 
@@ -131,7 +129,6 @@
             this.scoreOneLabel.Size = new System.Drawing.Size(82, 37);
             this.scoreOneLabel.TabIndex = 7;
             this.scoreOneLabel.Text = "Score";
-            this.scoreOneLabel.Click += new System.EventHandler(this.label2_Click);
             // 
             // scoreOneValue
             // 
@@ -179,7 +176,6 @@
             this.versusLabel.Size = new System.Drawing.Size(70, 37);
             this.versusLabel.TabIndex = 9;
             this.versusLabel.Text = "-VS-";
-            this.versusLabel.Click += new System.EventHandler(this.label1_Click_2);
             // 
             // scoreButton
             // 

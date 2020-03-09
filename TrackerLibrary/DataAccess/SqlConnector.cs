@@ -103,6 +103,11 @@ namespace TrackerLibrary.DataAccess
             }
         }
 
+        /// <summary>
+        /// Save the matchups and matchup entries for a tournament to the database.
+        /// </summary>
+        /// <param name="model">The tournament whose matchups and entries are to be saved.</param>
+        /// <param name="connection">A connection to the database to be saved to.</param>
         private void SaveTournamentRounds(TournamentModel model, IDbConnection connection)
         {
             foreach (List<MatchupModel> round in model.Rounds)

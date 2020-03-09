@@ -67,7 +67,7 @@ namespace TrackerLibrary.DataAccess
                 CreatePrize(prize);
             }
 
-            model.SaveRoundsToFile(GlobalConfig.MatchupsFile, GlobalConfig.MatchupEntriesFile);
+            model.SaveToRoundsFile(GlobalConfig.MatchupsFile, GlobalConfig.MatchupEntriesFile);
             tournaments.Add(model);
             tournaments.SaveToTournamentsFile(GlobalConfig.TournamentsFile);
         }
