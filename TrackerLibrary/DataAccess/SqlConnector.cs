@@ -145,6 +145,7 @@ namespace TrackerLibrary.DataAccess
                         {
                             p.Add("team_competing", entry.TeamCompeting.Id);
                         }
+                        p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                         connection.Execute("matchup_entries_insert", p, commandType: CommandType.StoredProcedure);
                     }
