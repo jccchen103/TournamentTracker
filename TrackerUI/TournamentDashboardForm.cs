@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TrackerLibrary;
 
 namespace TrackerUI
 {
@@ -15,6 +16,17 @@ namespace TrackerUI
         public TournamentDashboardForm()
         {
             InitializeComponent();
+            // TODO: Wire up the tournament drop-down
+            
         }
+
+        private void CreateTournamentButton_Click(object sender, EventArgs e)
+        {
+            CreateTournamentForm form = new CreateTournamentForm();
+            form.Show();
+        }
+
+
+        // TODO: Wire up the Load Tournament button
     }
 }

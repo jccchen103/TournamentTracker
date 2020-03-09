@@ -13,7 +13,6 @@ namespace TrackerLibrary
         // If the number of teams is not a power of 2, add byes until it is
         // Create the first round of matchups
         // Create every round after that, filling out only the parentMatchup properties
-            // TODO: test CreateRounds method
         public static void CreateRounds(TournamentModel model)
         {
             // must have at least 2 teams in a tournament for a match
