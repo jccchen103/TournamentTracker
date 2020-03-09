@@ -156,11 +156,14 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                     tm.EnteredTeams.Add(teams.Where(x => x.Id == idNum).First());
                 }
 
-                string[] prizeIds = cols[4].Split('|');
-                foreach (string id in prizeIds)
+                if (cols[4].Length > 0)
                 {
-                    int idNum = int.Parse(id);
-                    tm.Prizes.Add(prizes.Where(x => x.Id == idNum).First());
+                    string[] prizeIds = cols[4].Split('|');
+                    foreach (string id in prizeIds)
+                    {
+                        int idNum = int.Parse(id);
+                        tm.Prizes.Add(prizes.Where(x => x.Id == idNum).First());
+                    } 
                 }
 
                 // Capture Rounds information
@@ -174,7 +177,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                         int idNum = int.Parse(id);
                         roundMatchups.Add(matchups.Where(x => x.Id == idNum).First());
                     }
-                    // add list of matchups to tm.Rounds
+                    // add a round of matchup ids to tm.Rounds
                     tm.Rounds.Add(roundMatchups);
                 }
 
