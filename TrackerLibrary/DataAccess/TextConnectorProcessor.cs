@@ -285,7 +285,10 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
         private static void SaveToMatchupEntriesFile(this MatchupEntryModel entry)
         {
+            // Set the id of entry to be the max id + 1
             List<MatchupEntryModel> entries = GlobalConfig.MatchupEntriesFile.FullFilePath().LoadFile().ConvertToMatchupEntryModels();
+            int nextId = entries.Count() > 0 ? entries.Max(x => x.Id) + 1 : 1;
+            entry.Id = nextId;
 
             // Add the matchup record to be saved
             entries.Add(entry);
@@ -306,7 +309,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             foreach (string line in matchupsFileLines)
             {
                 string[] cols = line.Split(',');
-                // id, team entries (pipe-delimited entry ids), winner (a team id), matchupRound
+                // id, pipe-delimited entry ids, winner (a team id), matchupRound
                 MatchupModel m = new MatchupModel
                 {
                     Id = int.Parse(cols[0]),
@@ -335,6 +338,8 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                     Score = double.Parse(cols[2]),
                     ParentMatchup = cols[3].Length == 0 ? null : LookupMatchupById(cols[3])
                 };
+
+                output.Add(me);
             }
 
             return output;
@@ -399,7 +404,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 {
                     string[] cols = entry.Split(',');
 
-                    if (cols[1] == id)
+                    if (cols[0] == id)
                     {
                         matchingEntries.Add(entry);
                     }
@@ -426,13 +431,12 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             File.WriteAllLines(fileName.FullFilePath(), lines);
         }
 
-        private static object ConvertMatchupEntryListToString(List<MatchupEntryModel> entries)
+        private static string ConvertMatchupEntryListToString(List<MatchupEntryModel> entries)
         {
             List<string> entryIds = entries.Select(x => x.Id.ToString()).ToList();
             return string.Join("|", entryIds);
         }
 
-        // TODO: Make sure rounds of a tournament model is saved properly
         /// <summary>
         /// Convert the Rounds of a Tournament to a string of matchup ids,
         /// in which each round is separated by '|', 
