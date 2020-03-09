@@ -253,7 +253,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             {
                 foreach (MatchupModel matchup in round)
                 {
-                    SaveToMatchupsFile(matchup, matchupsFile);
+                    matchup.SaveToMatchupsFile();
                 }
             }
         }
@@ -270,9 +270,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
             foreach (MatchupEntryModel entry in matchup.Entries)
             {
-                // TODO: Save each entry in this matchup
-                entry.SaveToMatchupEntriesFile();
-                // entry = matchup id, team id, score, parent matchup id
+                entry.SaveToMatchupEntriesFile(matchup.Id);
             }
 
             // Convert matchup models to a list of strings, then save to the matchup file
@@ -294,7 +292,8 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             // Convert and save matchup entry models as lines of strings
             List<string> lines = new List<string>();
             foreach (MatchupEntryModel e in entries)
-            {
+            {                
+                // entry = matchup id, team id, score, parent matchup id
                 lines.Add($"{ matchupId },{ e.TeamCompeting?.Id },{ e.Score },{ e.ParentMatchup?.Id }");
             }
             File.WriteAllLines(GlobalConfig.MatchupEntriesFile.FullFilePath(), lines);
