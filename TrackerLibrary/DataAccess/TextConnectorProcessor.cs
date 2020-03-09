@@ -136,6 +136,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             List<TournamentModel> output = new List<TournamentModel>();
             List<TeamModel> teams = GlobalConfig.TeamsFile.FullFilePath().LoadFile().ConvertToTeamModels();
             List<PrizeModel> prizes = GlobalConfig.PrizesFile.FullFilePath().LoadFile().ConvertToPrizeModels();
+            List<MatchupModel> matchups = GlobalConfig.MatchupsFile.FullFilePath().LoadFile().ConvertToMatchupModels();
 
             foreach (string line in fileLines)
             {
@@ -163,19 +164,18 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 }
 
                 string[] rounds = cols[5].Split('|');
-                // TODO: Capture Rounds information
-                //foreach (string round in rounds)
-                //{
-                //    List<MatchupModel> roundMatchups = new List<MatchupModel>();
-                //    string[] roundMatchupIds = round.Split('^');
-                //    foreach (string id in roundMatchupIds)
-                //    {
-                //        int idNum = int.Parse(id);
-                //        roundMatchups.Add(matchups.Where(x => x.Id == idNum).First());
-                //    }
-                //    // add list of matchups to tm.Rounds
-                //    tm.Rounds.Add(roundMatchups);
-                //}
+                foreach (string round in rounds)
+                {
+                    List<MatchupModel> roundMatchups = new List<MatchupModel>();
+                    string[] roundMatchupIds = round.Split('^');
+                    foreach (string id in roundMatchupIds)
+                    {
+                        int idNum = int.Parse(id);
+                        roundMatchups.Add(matchups.Where(x => x.Id == idNum).First());
+                    }
+                    // add list of matchups to tm.Rounds
+                    tm.Rounds.Add(roundMatchups);
+                }
 
                 output.Add(tm);
             }
