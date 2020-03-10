@@ -66,6 +66,7 @@
             this.loadTournamentButton.TabIndex = 3;
             this.loadTournamentButton.Text = "Load Tournament";
             this.loadTournamentButton.UseVisualStyleBackColor = true;
+            this.loadTournamentButton.Click += new System.EventHandler(this.LoadTournamentButton_Click);
             // 
             // loadTournamentDropDown
             // 
