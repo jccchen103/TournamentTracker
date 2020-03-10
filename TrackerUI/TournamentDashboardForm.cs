@@ -36,8 +36,9 @@ namespace TrackerUI
 
         private void LoadTournamentButton_Click(object sender, EventArgs e)
         {
-            // TODO: Wire up the Load Tournament button
-
+            TournamentModel tm = (TournamentModel)loadTournamentDropDown.SelectedItem;
+            TournamentViewerForm tvf = new TournamentViewerForm(tm);
+            tvf.Show();
         }
     }
 }
