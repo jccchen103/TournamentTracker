@@ -236,37 +236,33 @@ namespace TrackerLibrary.DataAccess
             {
                 output = connection.Query<TournamentModel>("tournaments_all").ToList();
                 
-                Dapper.DynamicParameters p;
-
+                DynamicParameters p;
                 foreach (TournamentModel tournament in output)
                 {
-                    // Populate Teams
                     p = new DynamicParameters();
                     p.Add("id_filter", tournament.Id);
+
+                    // Populate Teams
                     tournament.EnteredTeams = connection.Query<TeamModel>(
                         "teams_by_tournament", p, commandType: CommandType.StoredProcedure).ToList();
 
+                    DynamicParameters tp;
                     foreach (TeamModel team in tournament.EnteredTeams)
                     {
-                        p = new DynamicParameters();
-                        p.Add("selected_team", team.Id);
+                        tp = new DynamicParameters();
+                        tp.Add("selected_team", team.Id);
 
                         team.TeamMembers = connection.Query<PersonModel>(
-                                "team_members_by_team", p, commandType: CommandType.StoredProcedure).ToList();
+                                "team_members_by_team", tp, commandType: CommandType.StoredProcedure).ToList();
                     }
 
                     // Populate Prizes
-                    p = new DynamicParameters();
-                    p.Add("id_filter", tournament.Id);
                     tournament.Prizes = connection.Query<PrizeModel>(
                         "prizes_by_tournament", p, commandType: CommandType.StoredProcedure).ToList();
 
                     // Populate Rounds
-                    p = new DynamicParameters();
-                    p.Add("id_filter", tournament.Id);
                     List<MatchupModel> matchups = connection.Query<MatchupModel>(
                         "matchups_by_tournament", p, commandType: CommandType.StoredProcedure).ToList();
-
 
                     foreach (MatchupModel m in matchups)
                     {
@@ -274,7 +270,15 @@ namespace TrackerLibrary.DataAccess
                         
                         if (m.WinnerId > 0)
                         {
-                            // TODO: Get the winning team by id from allTeams
+                            // Get the winning team by id from allTeams
+                            foreach (TeamModel team in allTeams)
+                            {
+                                if (team.Id == m.WinnerId)
+                                {
+                                    m.Winner = team;
+                                    break;
+                                }
+                            }
                         }
 
                         // Fill out the entries
@@ -287,12 +291,28 @@ namespace TrackerLibrary.DataAccess
                         {
                             if (me.TeamCompetingId > 0)
                             {
-                                // TODO: Get the competing team by id from allTeam
+                                // Get the competing team by id from allTeam
+                                foreach (TeamModel team in allTeams)
+                                {
+                                    if (team.Id == me.TeamCompetingId)
+                                    {
+                                        me.TeamCompeting = team;
+                                        break;
+                                    }
+                                }
                             }
 
                             if (me.ParentMatchupId > 0)
                             {
-                                // TODO: Get the parent matchup by id from matchups
+                                // Get the parent matchup by id from matchups
+                                foreach (MatchupModel matchup in matchups)
+                                {
+                                    if (matchup.Id == me.ParentMatchupId)
+                                    {
+                                        me.ParentMatchup = matchup;
+                                        break;
+                                    }
+                                }
                             }
                         }
 
