@@ -20,6 +20,7 @@ namespace TrackerLibrary.Models
         /// The name of this tournament.
         /// </summary>
         public string TournamentName { get; set; }
+
         /// <summary>
         /// The entry fee for each of the entered teams.
         /// </summary>

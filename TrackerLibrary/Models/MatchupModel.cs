@@ -35,5 +35,29 @@ namespace TrackerLibrary.Models
         /// The round number this matchup is part of.
         /// </summary>
         public int MatchupRound { get; set; }
+
+        public string DisplayName { 
+            get
+            {
+                string display = "";
+                foreach (MatchupEntryModel me in Entries)
+                {
+                    if (me.TeamCompeting is null)
+                    {
+                        display = "Matchup not yet determined";
+                        break;
+                    }
+                    else if (display.Length == 0)
+                    {
+                        display = me.TeamCompeting.TeamName;
+                    }
+                    else
+                    {
+                        display += $" vs. { me.TeamCompeting.TeamName }";
+                    }
+                }
+                return display;
+            }
+        }
     }
 }
