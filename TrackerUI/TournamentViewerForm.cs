@@ -140,5 +140,10 @@ namespace TrackerUI
                 }
             }
         }
+
+        private void RoundDropDown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadMatchups((int)roundDropDown.SelectedItem);
+        }
     }
 }
