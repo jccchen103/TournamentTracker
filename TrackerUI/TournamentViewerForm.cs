@@ -145,5 +145,10 @@ namespace TrackerUI
         {
             LoadMatchups((int)roundDropDown.SelectedItem);
         }
+
+        private void MatchupListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadMatchup((MatchupModel)matchupListBox.SelectedItem);
+        }
     }
 }
