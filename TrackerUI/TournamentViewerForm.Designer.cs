@@ -98,6 +98,7 @@
             this.unplayedCheckBox.TabIndex = 4;
             this.unplayedCheckBox.Text = "Unplayed Only";
             this.unplayedCheckBox.UseVisualStyleBackColor = true;
+            this.unplayedCheckBox.CheckedChanged += new System.EventHandler(this.UnplayedCheckBox_CheckedChanged);
             // 
             // matchupListBox
             // 

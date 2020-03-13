@@ -150,5 +150,12 @@ namespace TrackerUI
         {
             LoadMatchup((MatchupModel)matchupListBox.SelectedItem);
         }
+
+        private void UnplayedCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadMatchups((int)roundDropDown.SelectedItem);
+        }
+
+
     }
 }
