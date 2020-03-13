@@ -162,7 +162,7 @@ namespace TrackerUI
             string errorMsg = ValidateScores();
             if (errorMsg.Length > 0)
             {
-                // show error message
+                MessageBox.Show(errorMsg, "Error: Invalid Score");
                 return;
             }
 
@@ -180,10 +180,38 @@ namespace TrackerUI
             string output = "";
 
             // get scores
-            // check if valid for both
+            double teamOneScore;
+            double teamTwoScore;
+            bool scoreOneValid = double.TryParse(scoreOneValue.Text, out teamOneScore);
+            bool scoreTwoValid = double.TryParse(scoreTwoValue.Text, out teamTwoScore);
+
+            // check if the first score is valid
+            if (!scoreOneValid)
+            {
+                output = $"The score for {teamOneName.Text} is invalid.";
+            }
+
             // if there are two entries
+            else if (((MatchupModel)matchupListBox.SelectedItem).Entries.Count > 1)
+            {
+                // check second score
+                if (!scoreTwoValid)
+                {
+                    output = $"The score for {teamTwoName.Text} is invalid.";
+                }
+
                 // check if both scores are 0
+                else if (teamOneScore == 0 && teamTwoScore == 0)
+                {
+                    output = "The scores cannot be both 0. Please check again.";
+                }
+
                 // check if both scores are equal (ties are not allowed)
+                else if (teamOneScore == teamTwoScore)
+                {
+                    output = "Ties are not allowed. Please change the scores.";
+                }
+            }
 
             return output;
         }
