@@ -341,8 +341,30 @@ namespace TrackerLibrary.DataAccess
 
         public void UpdateMatchup(MatchupModel model)
         {
-            // TODO: Implement UpdateMatchup() for the sql connector
-            throw new NotImplementedException();
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
+            {
+                var p = new DynamicParameters();
+                if (model.Winner != null)
+                {
+                    p.Add("matchup_id", model.Id);
+                    p.Add("winner", model.Winner.Id);
+
+                    connection.Execute("matchups_update", p, commandType: CommandType.StoredProcedure);
+                }
+
+                foreach (MatchupEntryModel me in model.Entries)
+                {
+                    if (me.TeamCompeting != null)
+                    {
+                        p = new DynamicParameters();
+                        p.Add("matchup_entry_id", me.Id);
+                        p.Add("team", me.TeamCompeting.Id);
+                        p.Add("entry_score", me.Score);
+
+                        connection.Execute("matchup_entries_update", p, commandType: CommandType.StoredProcedure);
+                    }
+                }
+            }
         }
     }
 }

@@ -140,6 +140,8 @@ namespace TrackerUI
                     }
                 }
             }
+
+            scoreButton.Enabled = (m.Winner is null);
         }
 
         private void RoundDropDown_SelectedIndexChanged(object sender, EventArgs e)
