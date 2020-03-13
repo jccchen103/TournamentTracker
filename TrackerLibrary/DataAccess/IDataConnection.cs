@@ -19,5 +19,6 @@ namespace TrackerLibrary.DataAccess
         List<PersonModel> GetPeople();
         List<TeamModel> GetTeams();
         List<TournamentModel> GetTournaments();
+        void UpdateMatchup(MatchupModel model);
     }
 }

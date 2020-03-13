@@ -338,5 +338,11 @@ namespace TrackerLibrary.DataAccess
 
             return output;
         }
+
+        public void UpdateMatchup(MatchupModel model)
+        {
+            // TODO: Implement UpdateMatchup() for the sql connector
+            throw new NotImplementedException();
+        }
     }
 }

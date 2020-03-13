@@ -86,5 +86,11 @@ namespace TrackerLibrary.DataAccess
         {
             return GlobalConfig.TournamentsFile.FullFilePath().LoadFile().ConvertToTournamentModels();
         }
+
+        public void UpdateMatchup(MatchupModel model)
+        {
+            // TODO: Implement UpdateMatchup() for the text connector
+            throw new NotImplementedException();
+        }
     }
 }

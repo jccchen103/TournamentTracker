@@ -27,9 +27,94 @@ namespace TrackerLibrary
             CreateOtherRounds(model, rounds);
         }
 
-        // TODO: Update the scores of the tournament model
+        public static void UpdateTournamentResults(TournamentModel tournament)
+        {
+            // set the starting round
 
-        // TODO: Alert every player in a tournament about a upcoming round
+            List<MatchupModel> matchupsToUpdate = new List<MatchupModel>();
+
+            foreach (List<MatchupModel> round in tournament.Rounds)
+            {
+                foreach (MatchupModel rm in round)
+                {
+                    if (rm.Winner == null  && (rm.Entries.Count == 1 || rm.Entries.Any(x => x.Score != 0)))
+                    {
+                        matchupsToUpdate.Add(rm);
+                    }
+                }
+            }
+
+            SetWinnersInMatchups(matchupsToUpdate);
+            matchupsToUpdate.ForEach(x => GlobalConfig.Connections.UpdateMatchup(x));
+
+            AdvanceWinners(matchupsToUpdate, tournament);
+
+            // TODO: check if the current round is completed
+            // set the ending round
+            //if (endingRound > startingRound)
+            //{
+            //    // move on to the next round of the tournament and alert users
+            //}
+        }
+
+        // TODO: Alert every player in a tournament about an upcoming round
+
+        /// <summary>
+        /// Advance the winning team from each of the given matchups to the next round 
+        /// (i.e. set the winning team as the team competing in the following round).
+        /// </summary>
+        /// <param name="matchups">Matchups with a winner to advance.</param>
+        /// <param name="tournament">Tournament in which the matchups are part of.</param>
+        private static void AdvanceWinners(List<MatchupModel> matchups, TournamentModel tournament)
+        {
+            foreach (MatchupModel m in matchups)
+            {
+                foreach (List<MatchupModel> round in tournament.Rounds)
+                {
+                    foreach (MatchupModel rm in round)
+                    {
+                        foreach (MatchupEntryModel me in rm.Entries)
+                        {
+                            if (me.ParentMatchup != null && me.ParentMatchupId == m.Id)
+                            {
+                                me.TeamCompeting = m.Winner;
+                                GlobalConfig.Connections.UpdateMatchup(rm);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void SetWinnersInMatchups(List<MatchupModel> matchups)
+        {
+            foreach (MatchupModel m in matchups)
+            {
+                // Check for bys
+                if (m.Entries.Count == 1)
+                {
+                    m.Winner = m.Entries[0].TeamCompeting;
+                    continue;
+                }
+
+                MatchupEntryModel entryOne = m.Entries[0];
+                MatchupEntryModel entryTwo = m.Entries[1];
+
+                if (entryOne.Score > entryTwo.Score)
+                {
+                    m.Winner = entryOne.TeamCompeting;
+                }
+                else if (entryOne.Score < entryTwo.Score)
+                {
+                    m.Winner = entryTwo.TeamCompeting;
+                }
+                else
+                {
+                    throw new Exception("This application does not allow ties.");
+                }
+
+            }
+        }
 
         private static void CreateOtherRounds(TournamentModel model, int rounds)
         {
@@ -69,7 +154,9 @@ namespace TrackerLibrary
 
                 if (bys > 0 || currentMatchup.Entries.Count > 1)
                 {
-                    if (bys > 0) { bys--; }
+                    if (bys > 0) { 
+                        bys--;
+                    }
                     output.Add(currentMatchup);
                     currentMatchup = new MatchupModel { MatchupRound = 1 };
                 }
@@ -87,5 +174,6 @@ namespace TrackerLibrary
         {
             return teams.OrderBy(t => Guid.NewGuid()).ToList();
         }
+
     }
 }

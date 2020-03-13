@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TrackerLibrary;
 using TrackerLibrary.Models;
 
 namespace TrackerUI
@@ -156,6 +157,35 @@ namespace TrackerUI
             LoadMatchups((int)roundDropDown.SelectedItem);
         }
 
+        private void ScoreButton_Click(object sender, EventArgs e)
+        {
+            string errorMsg = ValidateScores();
+            if (errorMsg.Length > 0)
+            {
+                // show error message
+                return;
+            }
 
+            MatchupModel m = (MatchupModel)matchupListBox.SelectedItem;
+            m.Entries[0].Score = double.Parse(scoreOneValue.Text);
+            m.Entries[1].Score = double.Parse(scoreTwoValue.Text);
+
+            TournamentLogic.UpdateTournamentResults(tm);
+
+            LoadMatchups((int)roundDropDown.SelectedItem);
+        }
+
+        private string ValidateScores()
+        {
+            string output = "";
+
+            // get scores
+            // check if valid for both
+            // if there are two entries
+                // check if both scores are 0
+                // check if both scores are equal (ties are not allowed)
+
+            return output;
+        }
     }
 }
