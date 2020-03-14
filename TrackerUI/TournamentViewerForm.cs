@@ -39,18 +39,9 @@ namespace TrackerUI
 
         private void LoadRounds()
         {
-            rounds.Clear();
-
-            rounds.Add(1);
-            int currRound = 1;
-
             foreach (List<MatchupModel> round in tm.Rounds)
             {
-                if (round.First().MatchupRound > currRound)
-                {
-                    currRound = round.First().MatchupRound;
-                    rounds.Add(currRound);
-                }
+                rounds.Add(round.First().MatchupRound);
             }
 
             LoadMatchups(1);
@@ -78,7 +69,7 @@ namespace TrackerUI
 
             if (selectedMatchups.Count > 0)
             {
-                LoadMatchup(selectedMatchups.First());
+                LoadMatchupInfo(selectedMatchups.First());
             }
 
             DisplayMatchupInfo(selectedMatchups.Count > 0);
@@ -98,7 +89,7 @@ namespace TrackerUI
             scoreButton.Visible = isVisible;
         }
 
-        private void LoadMatchup(MatchupModel m)
+        private void LoadMatchupInfo(MatchupModel m)
         {
             if (m is null)
             {
@@ -121,7 +112,7 @@ namespace TrackerUI
                         teamOneName.Text = entry.TeamCompeting.TeamName;
                         scoreOneValue.Text = entry.Score.ToString();
 
-                        teamTwoName.Text = "<none>";
+                        teamTwoName.Text = "<None>";
                         scoreTwoValue.Text = "0";
                     }
                 }
@@ -151,7 +142,7 @@ namespace TrackerUI
 
         private void MatchupListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadMatchup((MatchupModel)matchupListBox.SelectedItem);
+            LoadMatchupInfo((MatchupModel)matchupListBox.SelectedItem);
         }
 
         private void UnplayedCheckBox_CheckedChanged(object sender, EventArgs e)

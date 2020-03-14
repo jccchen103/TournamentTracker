@@ -144,15 +144,5 @@ namespace TrackerUI
                 prizesListBox.Items.Remove(p);
             }
         }
-
-
-        //private void AddPrizesToDB(int tournamentId)
-        //{
-        //    foreach (PrizeModel model in prizesListBox.Items)
-        //    {
-        //        model.TournamentId = tournamentId;
-        //        GlobalConfig.Connections.CreatePrize(model);
-        //    }
-        //}
     }
 }

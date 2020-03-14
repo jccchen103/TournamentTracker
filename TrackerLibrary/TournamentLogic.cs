@@ -19,11 +19,11 @@ namespace TrackerLibrary
             if (model.EnteredTeams.Count < 2) { return; }
 
             List<TeamModel> randomizedTeams = RandomizeTeamOrder(model.EnteredTeams);
-            int teamCount = randomizedTeams.Count;          // number of teams (excluding bys)
+            int teamCount = randomizedTeams.Count;          // number of teams (excluding byes)
             int rounds = (int)Math.Ceiling(Math.Log(teamCount,2));
-            int bys = (int)Math.Pow(2, rounds) - teamCount; // number of bypasses needed
+            int byes = (int)Math.Pow(2, rounds) - teamCount; // number of byes needed
 
-            model.Rounds.Add(CreateFirstRound(bys, randomizedTeams));
+            model.Rounds.Add(CreateFirstRound(byes, randomizedTeams));
             CreateOtherRounds(model, rounds);
         }
 
@@ -53,8 +53,14 @@ namespace TrackerLibrary
             int endingRound = GetCurrentRound(tournament);
             if (endingRound > startingRound)
             {
-                // move on to the next round of the tournament and alert users
+                tournament.AlertUsersToNewRound();
             }
+        }
+
+        private static void AlertUsersToNewRound(this TournamentModel tournament)
+        {
+            int currRoundNum = GetCurrentRound(tournament);
+            // TODO: Alert every member of this tournament of the results of the current round
         }
 
         private static int GetCurrentRound(TournamentModel tournament)
@@ -107,7 +113,7 @@ namespace TrackerLibrary
         {
             foreach (MatchupModel m in matchups)
             {
-                // Check for bys
+                // Check for byes
                 if (m.Entries.Count == 1)
                 {
                     m.Winner = m.Entries[0].TeamCompeting;
@@ -161,7 +167,7 @@ namespace TrackerLibrary
             }
         }
 
-        private static List<MatchupModel> CreateFirstRound(int bys, List<TeamModel> teams)
+        private static List<MatchupModel> CreateFirstRound(int byes, List<TeamModel> teams)
         {
             List<MatchupModel> output = new List<MatchupModel>();
             MatchupModel currentMatchup = new MatchupModel { MatchupRound = 1 };
@@ -169,10 +175,10 @@ namespace TrackerLibrary
             {
                 currentMatchup.Entries.Add(new MatchupEntryModel { TeamCompeting = team });
 
-                if (bys > 0 || currentMatchup.Entries.Count > 1)
+                if (byes > 0 || currentMatchup.Entries.Count > 1)
                 {
-                    if (bys > 0) { 
-                        bys--;
+                    if (byes > 0) { 
+                        byes--;
                     }
                     output.Add(currentMatchup);
                     currentMatchup = new MatchupModel { MatchupRound = 1 };

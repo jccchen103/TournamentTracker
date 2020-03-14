@@ -86,6 +86,7 @@ namespace TrackerLibrary.DataAccess
 
         public void UpdateMatchup(MatchupModel model)
         {
+            // TODO: Test updating a matchup with the textfile db.
             model.UpdateMatchupsFile();
         }
     }
