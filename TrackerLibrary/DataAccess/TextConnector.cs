@@ -86,9 +86,7 @@ namespace TrackerLibrary.DataAccess
 
         public void UpdateMatchup(MatchupModel model)
         {
-            // TODO: Implement UpdateMatchup() for the text connector
-            
-            throw new NotImplementedException();
+            model.UpdateMatchupsFile();
         }
     }
 }
