@@ -42,10 +42,10 @@ namespace TrackerUI
                     EnteredTeams = tournamentPlayersListBox.Items.Cast<TeamModel>().ToList(),
                     Prizes = prizesListBox.Items.Cast<PrizeModel>().ToList()
                 };
-
                 TournamentLogic.CreateRounds(tm);
 
-                GlobalConfig.Connections.CreateTournament(tm);
+                GlobalConfig.Connections.CreateTournament(tm);  // add tm to the database
+                TournamentLogic.UpdateByes(tm); // automatically advance teams that received a bye
 
                 //alert users
 

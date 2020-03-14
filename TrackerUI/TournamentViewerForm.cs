@@ -161,14 +161,11 @@ namespace TrackerUI
 
             MatchupModel m = (MatchupModel)matchupListBox.SelectedItem;
             m.Entries[0].Score = double.Parse(scoreOneValue.Text);
-            if (m.Entries.Count > 1)
-            {
-                m.Entries[1].Score = double.Parse(scoreTwoValue.Text);
-            }
+            m.Entries[1].Score = double.Parse(scoreTwoValue.Text);
 
             try
             {
-                TournamentLogic.UpdateTournamentResults(tm);
+                TournamentLogic.UpdateTournamentResults(tm, m);
             }
             catch (Exception ex)
             {
@@ -195,26 +192,22 @@ namespace TrackerUI
                 output = $"The score for {teamOneName.Text} is invalid.";
             }
 
-            // if there are two entries
-            else if (((MatchupModel)matchupListBox.SelectedItem).Entries.Count > 1)
+            // check second score
+            if (!scoreTwoValid)
             {
-                // check second score
-                if (!scoreTwoValid)
-                {
-                    output = $"The score for {teamTwoName.Text} is invalid.";
-                }
+                output = $"The score for {teamTwoName.Text} is invalid.";
+            }
 
-                // check if both scores are 0
-                else if (teamOneScore == 0 && teamTwoScore == 0)
-                {
-                    output = "The scores cannot be both 0. Please change the scores.";
-                }
+            // check if both scores are 0
+            else if (teamOneScore == 0 && teamTwoScore == 0)
+            {
+                output = "The scores cannot be both 0. Please change the scores.";
+            }
 
-                // check if both scores are equal (ties are not allowed)
-                else if (teamOneScore == teamTwoScore)
-                {
-                    output = "Ties are not allowed. Please change the scores.";
-                }
+            // check if both scores are equal (ties are not allowed)
+            else if (teamOneScore == teamTwoScore)
+            {
+                output = "Ties are not allowed. Please change the scores.";
             }
 
             return output;

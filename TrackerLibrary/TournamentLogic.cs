@@ -27,28 +27,35 @@ namespace TrackerLibrary
             CreateOtherRounds(model, rounds);
         }
 
-        public static void UpdateTournamentResults(TournamentModel tournament)
+        /// <summary>
+        /// Set the default winner for all byes in a tournament, and update the database accordingly.
+        /// </summary>
+        /// <param name="tournament">The tournament to update.</param>
+        public static void UpdateByes(TournamentModel tournament)
+        {
+            // get all the bye matchups (all are in the first round)
+            List<MatchupModel> byeMatchups = tournament.Rounds[0].Where(x => x.Entries.Count == 1).ToList();
+
+            foreach (MatchupModel m in byeMatchups)
+            {
+                if (m.Winner is null)
+                {
+                    SetMatchupWinner(m);
+                    GlobalConfig.Connections.UpdateMatchup(m);
+                    AdvanceWinner(m, tournament);
+                }
+            }
+        }
+
+        public static void UpdateTournamentResults(TournamentModel tournament, MatchupModel matchupToUpdate)
         {
             // set the starting round
             int startingRound = GetCurrentRound(tournament);
 
-            List<MatchupModel> matchupsToUpdate = new List<MatchupModel>();
+            SetMatchupWinner(matchupToUpdate);
+            GlobalConfig.Connections.UpdateMatchup(matchupToUpdate);
 
-            foreach (List<MatchupModel> round in tournament.Rounds)
-            {
-                foreach (MatchupModel rm in round)
-                {
-                    if (rm.Winner == null  && (rm.Entries.Count == 1 || rm.Entries.Any(x => x.Score != 0)))
-                    {
-                        matchupsToUpdate.Add(rm);
-                    }
-                }
-            }
-
-            SetWinnersInMatchups(matchupsToUpdate);
-            matchupsToUpdate.ForEach(x => GlobalConfig.Connections.UpdateMatchup(x));
-
-            AdvanceWinners(matchupsToUpdate, tournament);
+            AdvanceWinner(matchupToUpdate, tournament);
 
             int endingRound = GetCurrentRound(tournament);
             if (endingRound > startingRound)
@@ -80,62 +87,55 @@ namespace TrackerLibrary
             return currRound;
         }
 
-        // TODO: Alert every player in a tournament about an upcoming round
-
         /// <summary>
-        /// Advance the winning team from each of the given matchups to the next round 
+        /// Advance the winning team of the given matchup to the next round 
         /// (i.e. set the winning team as the team competing in the following round).
         /// </summary>
-        /// <param name="matchups">Matchups with a winner to advance.</param>
-        /// <param name="tournament">Tournament in which the matchups are part of.</param>
-        private static void AdvanceWinners(List<MatchupModel> matchups, TournamentModel tournament)
+        /// <param name="matchup">The matchup with a winner to advance.</param>
+        /// <param name="tournament">Tournament in which the matchup is part of.</param>
+        private static void AdvanceWinner(MatchupModel matchup, TournamentModel tournament)
         {
-            foreach (MatchupModel m in matchups)
+            foreach (List<MatchupModel> round in tournament.Rounds)
             {
-                foreach (List<MatchupModel> round in tournament.Rounds)
+                foreach (MatchupModel rm in round)
                 {
-                    foreach (MatchupModel rm in round)
+                    foreach (MatchupEntryModel me in rm.Entries)
                     {
-                        foreach (MatchupEntryModel me in rm.Entries)
+                        if (me.ParentMatchup != null && me.ParentMatchup.Id == matchup.Id)
                         {
-                            if (me.ParentMatchup != null && me.ParentMatchup.Id == m.Id)
-                            {
-                                me.TeamCompeting = m.Winner;
-                                GlobalConfig.Connections.UpdateMatchup(rm);
-                            }
+                            me.TeamCompeting = matchup.Winner;
+                            GlobalConfig.Connections.UpdateMatchup(rm);
+
+                            return;
                         }
                     }
                 }
             }
         }
-
-        private static void SetWinnersInMatchups(List<MatchupModel> matchups)
+        
+        private static void SetMatchupWinner(MatchupModel matchup)
         {
-            foreach (MatchupModel m in matchups)
+            // Check for bye
+            if (matchup.Entries.Count == 1)
             {
-                // Check for byes
-                if (m.Entries.Count == 1)
-                {
-                    m.Winner = m.Entries[0].TeamCompeting;
-                    continue;
-                }
+                matchup.Winner = matchup.Entries[0].TeamCompeting;
+                return;
+            }
 
-                MatchupEntryModel entryOne = m.Entries[0];
-                MatchupEntryModel entryTwo = m.Entries[1];
+            MatchupEntryModel entryOne = matchup.Entries[0];
+            MatchupEntryModel entryTwo = matchup.Entries[1];
 
-                if (entryOne.Score > entryTwo.Score)
-                {
-                    m.Winner = entryOne.TeamCompeting;
-                }
-                else if (entryOne.Score < entryTwo.Score)
-                {
-                    m.Winner = entryTwo.TeamCompeting;
-                }
-                else
-                {
-                    throw new Exception("This application does not allow ties.");
-                }
-
+            if (entryOne.Score > entryTwo.Score)
+            {
+                matchup.Winner = entryOne.TeamCompeting;
+            }
+            else if (entryOne.Score < entryTwo.Score)
+            {
+                matchup.Winner = entryTwo.TeamCompeting;
+            }
+            else
+            {
+                throw new Exception("This application does not allow ties.");
             }
         }
 
