@@ -165,6 +165,7 @@ namespace TrackerUI
             {
                 m.Entries[1].Score = double.Parse(scoreTwoValue.Text);
             }
+
             try
             {
                 TournamentLogic.UpdateTournamentResults(tm);
@@ -206,7 +207,7 @@ namespace TrackerUI
                 // check if both scores are 0
                 else if (teamOneScore == 0 && teamTwoScore == 0)
                 {
-                    output = "The scores cannot be both 0. Please check again.";
+                    output = "The scores cannot be both 0. Please change the scores.";
                 }
 
                 // check if both scores are equal (ties are not allowed)

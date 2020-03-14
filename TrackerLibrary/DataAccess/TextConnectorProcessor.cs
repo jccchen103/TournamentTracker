@@ -290,11 +290,6 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
         public static void SaveRoundsToFile(this TournamentModel tournament)
         {
-            // loop through rounds of the tournament model
-            // loop through each matchup in the round
-            // get id for the new matchup and save the record
-            // loop through each entry, get the id, and save it
-
             foreach (List<MatchupModel> round in tournament.Rounds)
             {
                 foreach (MatchupModel matchup in round)
@@ -314,6 +309,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             // Add the matchup record to be saved
             matchups.Add(matchup);
 
+            // loop through each entry, get the id, and save it
             foreach (MatchupEntryModel entry in matchup.Entries)
             {
                 entry.SaveToMatchupEntriesFile();

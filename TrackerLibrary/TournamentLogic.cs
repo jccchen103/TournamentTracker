@@ -98,7 +98,7 @@ namespace TrackerLibrary
                     {
                         foreach (MatchupEntryModel me in rm.Entries)
                         {
-                            if (me.ParentMatchup != null && me.ParentMatchupId == m.Id)
+                            if (me.ParentMatchup != null && me.ParentMatchup.Id == m.Id)
                             {
                                 me.TeamCompeting = m.Winner;
                                 GlobalConfig.Connections.UpdateMatchup(rm);
