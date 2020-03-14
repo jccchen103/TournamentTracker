@@ -28,16 +28,13 @@ namespace TrackerLibrary.DataAccess
 
         public void CreatePrize(PrizeModel model)
         {
-            // load the text file and convert to prize models
             List<PrizeModel> prizes = GlobalConfig.PrizesFile.FullFilePath().LoadFile().ConvertToPrizeModels();
 
-            // add the new record with the next id (max id + 1)
             int nextId = prizes.Count() > 0 ? prizes.OrderByDescending(x => x.Id).First().Id + 1 : 1;
             model.Id = nextId;
 
             prizes.Add(model);
 
-            // convert prizes to strings and save to the prizes text file
             prizes.SaveToPrizesFile(GlobalConfig.PrizesFile);
         }
 
@@ -67,7 +64,7 @@ namespace TrackerLibrary.DataAccess
                 CreatePrize(prize);
             }
 
-            model.SaveRoundsToFile(GlobalConfig.MatchupsFile, GlobalConfig.MatchupEntriesFile);
+            model.SaveRoundsToFile();
             tournaments.Add(model);
             tournaments.SaveToTournamentsFile(GlobalConfig.TournamentsFile);
         }
@@ -90,6 +87,7 @@ namespace TrackerLibrary.DataAccess
         public void UpdateMatchup(MatchupModel model)
         {
             // TODO: Implement UpdateMatchup() for the text connector
+            
             throw new NotImplementedException();
         }
     }
