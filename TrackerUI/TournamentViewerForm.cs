@@ -170,9 +170,19 @@ namespace TrackerUI
 
             MatchupModel m = (MatchupModel)matchupListBox.SelectedItem;
             m.Entries[0].Score = double.Parse(scoreOneValue.Text);
-            m.Entries[1].Score = double.Parse(scoreTwoValue.Text);
-
-            TournamentLogic.UpdateTournamentResults(tm);
+            if (m.Entries.Count > 1)
+            {
+                m.Entries[1].Score = double.Parse(scoreTwoValue.Text);
+            }
+            try
+            {
+                TournamentLogic.UpdateTournamentResults(tm);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"The application had the following error: { ex.Message }");
+                return;
+            }
 
             LoadMatchups((int)roundDropDown.SelectedItem);
         }

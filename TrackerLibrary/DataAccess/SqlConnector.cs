@@ -171,6 +171,10 @@ namespace TrackerLibrary.DataAccess
             }
         }
 
+        /// <summary>
+        /// Save the prizes associated with a given tournament to the database.
+        /// </summary>
+        /// <param name="model">The tournament whose prizes are to be saved.</param>
         private void SaveTournamentPrizes(TournamentModel model)
         {
             foreach (PrizeModel prize in model.Prizes)

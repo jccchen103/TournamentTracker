@@ -47,11 +47,13 @@ namespace TrackerUI
 
                 GlobalConfig.Connections.CreateTournament(tm);
 
+                //alert users
+
                 // Show the tournament that was just created
                 TournamentViewerForm viewerForm = new TournamentViewerForm(tm);
                 viewerForm.Show();
                 
-                //this.Close();
+                this.Close();
             }
             else
             {

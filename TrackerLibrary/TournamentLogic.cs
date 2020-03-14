@@ -30,6 +30,7 @@ namespace TrackerLibrary
         public static void UpdateTournamentResults(TournamentModel tournament)
         {
             // set the starting round
+            int startingRound = GetCurrentRound(tournament);
 
             List<MatchupModel> matchupsToUpdate = new List<MatchupModel>();
 
@@ -49,12 +50,28 @@ namespace TrackerLibrary
 
             AdvanceWinners(matchupsToUpdate, tournament);
 
-            // TODO: check if the current round is completed
-            // set the ending round
-            //if (endingRound > startingRound)
-            //{
-            //    // move on to the next round of the tournament and alert users
-            //}
+            int endingRound = GetCurrentRound(tournament);
+            if (endingRound > startingRound)
+            {
+                // move on to the next round of the tournament and alert users
+            }
+        }
+
+        private static int GetCurrentRound(TournamentModel tournament)
+        {
+            // Find the first round in which not all matchups have a winner
+            int currRound = 1;
+            foreach (List<MatchupModel> round in tournament.Rounds)
+            {
+                if (round.Any(x => x.Winner is null))
+                {
+                    return currRound;
+                }
+
+                currRound++;
+            }
+
+            return currRound;
         }
 
         // TODO: Alert every player in a tournament about an upcoming round
