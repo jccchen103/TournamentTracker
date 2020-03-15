@@ -115,8 +115,9 @@ namespace TrackerLibrary.DataAccess
                 foreach (MatchupModel matchup in round)
                 {
                     var p = new DynamicParameters();
-                    p.Add("round", matchup.MatchupRound);
                     p.Add("tournament", model.Id);
+                    p.Add("round", matchup.MatchupRound);
+                    p.Add("winner", matchup.Winner?.Id);
                     p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                     connection.Execute("matchups_insert", p, commandType: CommandType.StoredProcedure);
@@ -127,24 +128,9 @@ namespace TrackerLibrary.DataAccess
                     {
                         p = new DynamicParameters();
                         p.Add("matchup", matchup.Id);
+                        p.Add("parent", entry.ParentMatchup?.Id);
+                        p.Add("team_competing", entry.TeamCompeting?.Id);
 
-                        if (entry.ParentMatchup is null)
-                        {
-                            p.Add("parent", null);
-                        } 
-                        else
-                        {
-                            p.Add("parent", entry.ParentMatchup.Id);
-                        }
-                        
-                        if (entry.TeamCompeting is null)
-                        {
-                            p.Add("team_competing", null);
-                        }
-                        else
-                        {
-                            p.Add("team_competing", entry.TeamCompeting.Id);
-                        }
                         p.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                         connection.Execute("matchup_entries_insert", p, commandType: CommandType.StoredProcedure);
@@ -185,7 +171,7 @@ namespace TrackerLibrary.DataAccess
         }
 
         /// <summary>
-        /// Save a tournament and fill in the id property of the model.
+        /// Save the name and entry fee of a tournament, and fill in the id property of the model.
         /// </summary>
         /// <param name="model">Model with tournament data and incomplete id property.</param>
         /// <param name="connection">A connection to the database to be saved to.</param>

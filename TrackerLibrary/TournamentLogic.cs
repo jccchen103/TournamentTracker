@@ -11,8 +11,8 @@ namespace TrackerLibrary
     {
         // Order our list of teams randomly
         // If the number of teams is not a power of 2, add byes until it is
-        // Create the first round of matchups
-        // Create every round after that, filling out only the parentMatchup properties
+        // Create the first round of matchups with the entered teams
+        // Create every round after that with the parentMatchup property
         public static void CreateRounds(TournamentModel model)
         {
             // must have at least 2 teams in a tournament for a match
@@ -25,13 +25,15 @@ namespace TrackerLibrary
 
             model.Rounds.Add(CreateFirstRound(byes, randomizedTeams));
             CreateOtherRounds(model, rounds);
+
+            UpdateByes(model); // automatically advance teams that received a bye
         }
 
         /// <summary>
-        /// Set the default winner for all byes in a tournament, and update the database accordingly.
+        /// Set and advance the default winner for all byes in a tournament.
         /// </summary>
-        /// <param name="tournament">The tournament to update.</param>
-        public static void UpdateByes(TournamentModel tournament)
+        /// <param name="tournament">The tournament model to update.</param>
+        private static void UpdateByes(TournamentModel tournament)
         {
             // get all the bye matchups (all are in the first round)
             List<MatchupModel> byeMatchups = tournament.Rounds[0].Where(x => x.Entries.Count == 1).ToList();
@@ -39,7 +41,6 @@ namespace TrackerLibrary
             foreach (MatchupModel m in byeMatchups)
             {
                 SetMatchupWinner(m);
-                GlobalConfig.Connections.UpdateMatchup(m);
                 AdvanceWinner(m, tournament);
             }
         }

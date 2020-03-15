@@ -230,11 +230,10 @@ namespace TrackerLibrary.DataAccess.TextHelpers
         }
 
         /// <summary>
-        /// Converts prize models to a list of string and writes it to the specified csv file.
+        /// Converts prize models to a list of string and writes it to the prizes file.
         /// </summary>
         /// <param name="prizes">The list of prize models to be saved.</param>
-        /// <param name="fileName">Name of file to be written to.</param>
-        public static void SaveToPrizesFile(this List<PrizeModel> prizes, string fileName)
+        public static void SaveToPrizesFile(this List<PrizeModel> prizes)
         {
             // convert prize models to lines in a list
             List<string> lines = new List<string>();
@@ -245,15 +244,14 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             }
 
             // write all lines in the list to the text file
-            File.WriteAllLines(fileName.FullFilePath(), lines);
+            File.WriteAllLines(GlobalConfig.PrizesFile.FullFilePath(), lines);
         }
 
         /// <summary>
-        /// Saves person models to a csv file with the specified file name.
+        /// Saves person models to a csv file with the people file.
         /// </summary>
         /// <param name="people">The list of person models to be saved.</param>
-        /// <param name="fileName">Name of the file that will be written to.</param>
-        public static void SaveToPeopleFile(this List<PersonModel> people, string fileName)
+        public static void SaveToPeopleFile(this List<PersonModel> people)
         {
             // convert prize models to lines in a list
             List<string> lines = new List<string>();
@@ -264,17 +262,16 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             }
 
             // write all lines in the list to the text file
-            File.WriteAllLines(fileName.FullFilePath(), lines);
+            File.WriteAllLines(GlobalConfig.PeopleFile.FullFilePath(), lines);
         }
 
         /// <summary>
-        /// Saves team models to a csv file with the given file name.
+        /// Saves team models to the teams textfile.
         /// A team model will be recorded in the following format: 
         /// team id, team name, team members' person id separated by the pipe.
         /// </summary>
         /// <param name="teams">The list of team models to be saved.</param>
-        /// <param name="fileName">Name of the csv file to be written to.</param>
-        public static void SaveToTeamsFile(this List<TeamModel> teams, string fileName)
+        public static void SaveToTeamsFile(this List<TeamModel> teams)
         {
             List<string> lines = new List<string>();
 
@@ -285,7 +282,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 lines.Add(record);
             }
 
-            File.WriteAllLines(fileName.FullFilePath(), lines);
+            File.WriteAllLines(GlobalConfig.TeamsFile.FullFilePath(), lines);
         }
 
         public static void SaveRoundsToFile(this TournamentModel tournament)
@@ -471,7 +468,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             return matchingEntries.ConvertToMatchupEntryModels();
         }
 
-        public static void SaveToTournamentsFile(this List<TournamentModel> tournaments, string fileName)
+        public static void SaveToTournamentsFile(this List<TournamentModel> tournaments)
         {
             List<string> lines = new List<string>();
 
@@ -485,7 +482,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 lines.Add(record);
             }
 
-            File.WriteAllLines(fileName.FullFilePath(), lines);
+            File.WriteAllLines(GlobalConfig.TournamentsFile.FullFilePath(), lines);
         }
 
         private static string ConvertMatchupEntryListToString(List<MatchupEntryModel> entries)

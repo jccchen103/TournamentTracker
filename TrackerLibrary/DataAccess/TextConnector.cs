@@ -23,7 +23,7 @@ namespace TrackerLibrary.DataAccess
             people.Add(model);
 
             // convert person models to strings and save to the people text file
-            people.SaveToPeopleFile(GlobalConfig.PeopleFile); 
+            people.SaveToPeopleFile(); 
         }
 
         public void CreatePrize(PrizeModel model)
@@ -35,17 +35,17 @@ namespace TrackerLibrary.DataAccess
 
             prizes.Add(model);
 
-            prizes.SaveToPrizesFile(GlobalConfig.PrizesFile);
+            prizes.SaveToPrizesFile();
         }
 
         public void CreateTeam(TeamModel model)
         {
-            List<TeamModel> teams = GlobalConfig.TeamsFile.FullFilePath().LoadFile().ConvertToTeamModels();
+            List<TeamModel> teams = GetTeams();
             int nextId = teams.Count() > 0 ? teams.OrderByDescending(x => x.Id).First().Id + 1 : 1;
             model.Id = nextId;
 
             teams.Add(model);
-            teams.SaveToTeamsFile(GlobalConfig.TeamsFile);
+            teams.SaveToTeamsFile();
         }
 
         public void CreateTournament(TournamentModel model)
@@ -66,7 +66,7 @@ namespace TrackerLibrary.DataAccess
 
             model.SaveRoundsToFile();
             tournaments.Add(model);
-            tournaments.SaveToTournamentsFile(GlobalConfig.TournamentsFile);
+            tournaments.SaveToTournamentsFile();
         }
 
         public List<PersonModel> GetPeople()

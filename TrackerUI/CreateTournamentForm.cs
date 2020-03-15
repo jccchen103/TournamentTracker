@@ -45,7 +45,6 @@ namespace TrackerUI
                 TournamentLogic.CreateRounds(tm);
 
                 GlobalConfig.Connections.CreateTournament(tm);  // add tm to the database
-                TournamentLogic.UpdateByes(tm); // automatically advance teams that received a bye
 
                 //alert users
 
