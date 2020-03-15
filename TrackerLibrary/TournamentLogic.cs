@@ -38,18 +38,14 @@ namespace TrackerLibrary
 
             foreach (MatchupModel m in byeMatchups)
             {
-                if (m.Winner is null)
-                {
-                    SetMatchupWinner(m);
-                    GlobalConfig.Connections.UpdateMatchup(m);
-                    AdvanceWinner(m, tournament);
-                }
+                SetMatchupWinner(m);
+                GlobalConfig.Connections.UpdateMatchup(m);
+                AdvanceWinner(m, tournament);
             }
         }
 
         public static void UpdateTournamentResults(TournamentModel tournament, MatchupModel matchupToUpdate)
         {
-            // set the starting round
             int startingRound = GetCurrentRound(tournament);
 
             SetMatchupWinner(matchupToUpdate);
@@ -70,7 +66,7 @@ namespace TrackerLibrary
             // TODO: Alert every member of this tournament of the results of the current round
         }
 
-        private static int GetCurrentRound(TournamentModel tournament)
+        public static int GetCurrentRound(TournamentModel tournament)
         {
             // Find the first round in which not all matchups have a winner
             int currRound = 1;
@@ -95,17 +91,16 @@ namespace TrackerLibrary
         /// <param name="tournament">Tournament in which the matchup is part of.</param>
         private static void AdvanceWinner(MatchupModel matchup, TournamentModel tournament)
         {
-            foreach (List<MatchupModel> round in tournament.Rounds)
+            for (int i = 1; i < tournament.Rounds.Count; i++)
             {
-                foreach (MatchupModel rm in round)
+                foreach (MatchupModel rm in tournament.Rounds[i])
                 {
                     foreach (MatchupEntryModel me in rm.Entries)
                     {
-                        if (me.ParentMatchup != null && me.ParentMatchup.Id == matchup.Id)
+                        if (me.ParentMatchup.Id == matchup.Id)
                         {
                             me.TeamCompeting = matchup.Winner;
                             GlobalConfig.Connections.UpdateMatchup(rm);
-
                             return;
                         }
                     }
