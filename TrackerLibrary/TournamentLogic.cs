@@ -65,6 +65,7 @@ namespace TrackerLibrary
         {
             int currRoundNum = GetCurrentRound(tournament);
             // TODO: Alert every member of this tournament of the results of the current round
+            EmailLogic.SendEmail(new List<string>{ "me@gmail.com" }, "Test Email", "This is a test email.");
         }
 
         public static int GetCurrentRound(TournamentModel tournament)
