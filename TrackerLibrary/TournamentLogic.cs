@@ -71,43 +71,52 @@ namespace TrackerLibrary
             int currRoundNum = GetCurrentRound(tournament);
             List<MatchupModel> currRound = tournament.Rounds.Where(x => x.First().MatchupRound == currRoundNum).First();
 
-            // TODO: Alert every member competing in the current round of this tournament of their matchup
+            // Alert every member competing in the current round of this tournament of their matchup
             foreach (MatchupModel matchup in currRound)
             {
                 foreach (MatchupEntryModel me in matchup.Entries)
                 {
                     string subject = $"Your Next {tournament.TournamentName} Matchup";
-                    StringBuilder body = new StringBuilder();
-
-                    TeamModel competitor = matchup.Entries.Where(x => x.TeamCompeting != me.TeamCompeting).FirstOrDefault()?.TeamCompeting;
-                    if (competitor is null)
-                    {
-                        body.AppendLine("<h1>You have a bye week this round!</h1>");
-                        body.AppendLine("<p>Enjoy your round off.</p>");
-                        body.AppendLine("<p>~Tournament Tracker</p>");
-                    }
-                    else
-                    {
-                        body.AppendLine("<h1>You have a new matchup!</h1>");
-                        body.Append("<p><strong>Competitor: </strong>");
-                        body.AppendLine(competitor.TeamName + "</p>");
-                        body.AppendLine("<p>Have a great time.</p>");
-                        body.AppendLine("<p>~Tournament Tracker</p>");
-                    }
+                    string body = NewRoundEntryBody(matchup, me);
 
                     List<string> to = new List<string>();
-                    foreach (PersonModel member in me.TeamCompeting.TeamMembers)
-                    {
-                        to.Add(member.Email);
-                    }
-                    EmailLogic.SendEmail(to, subject, body.ToString());
+                    me.TeamCompeting.TeamMembers.ForEach(x => to.Add(x.Email));
+
+                    EmailLogic.SendEmail(to, subject, body);
                 }
             }
         }
 
         /// <summary>
-        /// Returns the round the tournament is in, or one more than its total number of rounds
-        /// if all rounds of the tournament are finished.
+        /// Generates the body of an email to alert participating players of their matchup
+        /// for the new round, tailored to the team competing in the given matchup entry.
+        /// </summary>
+        /// <returns>A HTML-formatted string for the body of an email.</returns>
+        private static string NewRoundEntryBody(MatchupModel matchup, MatchupEntryModel me)
+        {
+            StringBuilder body = new StringBuilder();
+
+            TeamModel competitor = matchup.Entries.Where(x => x.TeamCompeting != me.TeamCompeting).FirstOrDefault()?.TeamCompeting;
+            if (competitor is null)
+            {
+                body.AppendLine("<h1>You have a bye week this round!</h1>");
+                body.AppendLine("<p>Enjoy your round off.</p>");
+                body.AppendLine("<p>~Tournament Tracker</p>");
+            }
+            else
+            {
+                body.AppendLine("<h1>You have a new matchup!</h1>");
+                body.Append("<p><strong>Competitor: </strong>");
+                body.AppendLine(competitor.TeamName + "</p>");
+                body.AppendLine("<p>Have a great time.</p>");
+                body.AppendLine("<p>~Tournament Tracker</p>");
+            }
+
+            return body.ToString();
+        }
+
+        /// <summary>
+        /// Indicates the round the given tournament is in, or if it is finished.
         /// </summary>
         /// <param name="tournament">The tournament being checked.</param>
         /// <returns>The sum of 1 plus the number of completed rounds in the tournament.</returns>
