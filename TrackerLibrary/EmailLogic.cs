@@ -30,6 +30,7 @@ namespace TrackerLibrary
             }
             mail.Subject = subject;
             mail.Body = body;
+            mail.IsBodyHtml = true;
 
             SmtpClient client = new SmtpClient();
             client.Send(mail);

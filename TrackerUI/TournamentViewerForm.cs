@@ -133,7 +133,7 @@ namespace TrackerUI
             }
 
             // Disable the score button for finished rounds
-            scoreButton.Enabled = (m.MatchupRound >= TournamentLogic.GetCurrentRound(tm));
+            //scoreButton.Enabled = (m.MatchupRound >= TournamentLogic.GetCurrentRound(tm));
         }
 
         private void RoundDropDown_SelectedIndexChanged(object sender, EventArgs e)
@@ -181,7 +181,7 @@ namespace TrackerUI
                 return;
             }
 
-            LoadMatchups((int)roundDropDown.SelectedItem);
+            LoadMatchups(TournamentLogic.GetCurrentRound(tm));
         }
 
         private string ValidateScores()

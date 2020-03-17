@@ -55,7 +55,12 @@ namespace TrackerLibrary
             AdvanceWinner(matchupToUpdate, tournament);
 
             int endingRound = GetCurrentRound(tournament);
-            if (endingRound > startingRound)
+            if (endingRound > tournament.Rounds.Count)
+            {
+                // last round is finished
+                CompleteTournament(tournament);
+            }
+            else if (endingRound > startingRound)
             {
                 tournament.AlertUsersToNewRound();
             }
@@ -64,25 +69,66 @@ namespace TrackerLibrary
         private static void AlertUsersToNewRound(this TournamentModel tournament)
         {
             int currRoundNum = GetCurrentRound(tournament);
-            // TODO: Alert every member of this tournament of the results of the current round
-            EmailLogic.SendEmail(new List<string>{ "me@gmail.com" }, "Test Email", "This is a test email.");
+            List<MatchupModel> currRound = tournament.Rounds.Where(x => x.First().MatchupRound == currRoundNum).First();
+
+            // TODO: Alert every member competing in the current round of this tournament of their matchup
+            foreach (MatchupModel matchup in currRound)
+            {
+                foreach (MatchupEntryModel me in matchup.Entries)
+                {
+                    string subject = $"Your Next {tournament.TournamentName} Matchup";
+                    StringBuilder body = new StringBuilder();
+
+                    TeamModel competitor = matchup.Entries.Where(x => x.TeamCompeting != me.TeamCompeting).FirstOrDefault()?.TeamCompeting;
+                    if (competitor is null)
+                    {
+                        body.AppendLine("<h1>You have a bye week this round!</h1>");
+                        body.AppendLine("<p>Enjoy your round off.</p>");
+                        body.AppendLine("<p>~Tournament Tracker</p>");
+                    }
+                    else
+                    {
+                        body.AppendLine("<h1>You have a new matchup!</h1>");
+                        body.Append("<p><strong>Competitor: </strong>");
+                        body.AppendLine(competitor.TeamName + "</p>");
+                        body.AppendLine("<p>Have a great time.</p>");
+                        body.AppendLine("<p>~Tournament Tracker</p>");
+                    }
+
+                    List<string> to = new List<string>();
+                    foreach (PersonModel member in me.TeamCompeting.TeamMembers)
+                    {
+                        to.Add(member.Email);
+                    }
+                    EmailLogic.SendEmail(to, subject, body.ToString());
+                }
+            }
         }
 
+        /// <summary>
+        /// Returns the round the tournament is in, or one more than its total number of rounds
+        /// if all rounds of the tournament are finished.
+        /// </summary>
+        /// <param name="tournament">The tournament being checked.</param>
+        /// <returns>The sum of 1 plus the number of completed rounds in the tournament.</returns>
         public static int GetCurrentRound(TournamentModel tournament)
         {
-            // Find the first round in which not all matchups have a winner
             int currRound = 1;
             foreach (List<MatchupModel> round in tournament.Rounds)
             {
                 if (round.Any(x => x.Winner is null))
                 {
-                    return currRound;
+                    return currRound;   // first round in which not all matchups have a winner
                 }
-
                 currRound++;
             }
 
-            return currRound;
+            return currRound;   // all rounds are completed
+        }
+
+        private static void CompleteTournament(TournamentModel tournament)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -99,7 +145,7 @@ namespace TrackerLibrary
                 {
                     foreach (MatchupEntryModel me in rm.Entries)
                     {
-                        if (me.ParentMatchup.Id == matchup.Id)
+                        if (me.ParentMatchup == matchup)
                         {
                             me.TeamCompeting = matchup.Winner;
                             GlobalConfig.Connections.UpdateMatchup(rm);
