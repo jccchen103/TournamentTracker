@@ -10,6 +10,26 @@ namespace TrackerLibrary.DataAccess
 {
     public class TextConnector : IDataConnection
     {
+        public void CompleteTournament(TournamentModel model)
+        {
+            List<TournamentModel> tournaments = GlobalConfig.TournamentsFile
+                .FullFilePath()
+                .LoadFile()
+                .ConvertToTournamentModels();
+
+            // delete the prizes for this tournament
+            List<PrizeModel> prizes = GlobalConfig.PrizesFile.FullFilePath().LoadFile().ConvertToPrizeModels();
+            foreach (PrizeModel prize in model.Prizes)
+            {
+                prizes.Remove(prize);
+            }
+            prizes.SaveToPrizesFile();
+ 
+            // Delete the finished tournament entry from the tournaments file
+            tournaments.Remove(model);
+            tournaments.SaveToTournamentsFile();
+        }
+
         public void CreatePerson(PersonModel model)
         {
             // read file with people data

@@ -224,7 +224,7 @@ namespace TrackerLibrary.DataAccess
             List<TournamentModel> output = new List<TournamentModel>();
             using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
             {
-                output = connection.Query<TournamentModel>("tournaments_all").ToList();
+                output = connection.Query<TournamentModel>("tournaments_all_active").ToList();
                 
                 DynamicParameters p;
                 foreach (TournamentModel tournament in output)
@@ -354,6 +354,18 @@ namespace TrackerLibrary.DataAccess
                         connection.Execute("matchup_entries_update", p, commandType: CommandType.StoredProcedure);
                     }
                 }
+            }
+        }
+
+        public void CompleteTournament(TournamentModel model)
+        {
+            using (IDbConnection connection = new MySqlConnection(GlobalConfig.GetConnectionString(db)))
+            {
+                var p = new DynamicParameters();
+                p.Add("tournament_id", model.Id);
+
+                // mark the tournament entry as not active
+                connection.Execute("tournaments_complete", p, commandType: CommandType.StoredProcedure);
             }
         }
     }

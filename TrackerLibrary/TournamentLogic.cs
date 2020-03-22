@@ -66,7 +66,14 @@ namespace TrackerLibrary
             }
         }
 
-        private static void AlertUsersToNewRound(this TournamentModel tournament)
+        private static void CompleteTournament(TournamentModel tournament)
+        {
+            GlobalConfig.Connections.CompleteTournament(tournament);
+
+            // TODO: Announce tournament results and prize distributions
+        }
+
+        public static void AlertUsersToNewRound(this TournamentModel tournament)
         {
             int currRoundNum = GetCurrentRound(tournament);
             List<MatchupModel> currRound = tournament.Rounds.Where(x => x.First().MatchupRound == currRoundNum).First();
@@ -133,11 +140,6 @@ namespace TrackerLibrary
             }
 
             return currRound;   // all rounds are completed
-        }
-
-        private static void CompleteTournament(TournamentModel tournament)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
