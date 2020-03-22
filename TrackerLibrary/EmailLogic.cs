@@ -17,19 +17,14 @@ namespace TrackerLibrary
         public static void SendEmail(List<string> to, List<string> bcc, string subject, string body)
         {
             MailAddress fromMailAddress = new MailAddress(GlobalConfig.AppKeyLookup("senderEmail"), GlobalConfig.AppKeyLookup("senderDisplayName"));
-            MailMessage mail = new MailMessage();
-
-            mail.From = fromMailAddress;
-            foreach (string toAddress in to)
+            MailMessage mail = new MailMessage
             {
-                mail.To.Add(toAddress);
-            }
-            foreach (string bccAddress in bcc)
-            {
-                mail.Bcc.Add(bccAddress);
-            }
-            mail.Subject = subject;
-            mail.Body = body;
+                From = fromMailAddress,
+                Subject = subject,
+                Body = body
+            };
+            to.ForEach(x => mail.To.Add(x));
+            bcc.ForEach(x => mail.Bcc.Add(x));
             mail.IsBodyHtml = true;
 
             SmtpClient client = new SmtpClient();
