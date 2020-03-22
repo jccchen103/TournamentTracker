@@ -46,7 +46,7 @@ namespace TrackerUI
 
                 GlobalConfig.Connections.CreateTournament(tm);  // add tm to the database
 
-                //alert users
+                TournamentLogic.AlertUsersToNewRound(tm);   // alert users of first round matchups
 
                 // Show the tournament that was just created
                 TournamentViewerForm viewerForm = new TournamentViewerForm(tm);
