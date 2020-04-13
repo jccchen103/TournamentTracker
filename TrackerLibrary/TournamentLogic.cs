@@ -70,7 +70,69 @@ namespace TrackerLibrary
         {
             GlobalConfig.Connections.CompleteTournament(tournament);
 
-            // TODO: Announce tournament results and prize distributions
+            // Announce tournament results and prize distributions
+            MatchupModel lastMatchup = tournament.Rounds.Last().First();
+            TeamModel winner = lastMatchup.Winner;
+            TeamModel runnerUp = lastMatchup.Entries.Where(x => x.TeamCompeting != winner).First().TeamCompeting;
+            string subject = $"{tournament.TournamentName} has concluded!";
+
+            StringBuilder body = new StringBuilder();
+            body.AppendLine("<h2>WE HAVE A WINNER!</h2>");
+            body.AppendLine($"<p>Congratulations to <b>{winner.TeamName}</b> on a great tournament.</p>");
+            body.AppendLine("<br>");
+
+            if (tournament.Prizes.Count > 0)
+            {
+                decimal totalIncome = tournament.EnteredTeams.Count * tournament.EntryFee;
+                PrizeModel firstPlacePrize = tournament.Prizes.Where(x => x.PlaceNumber == 1).FirstOrDefault();
+                PrizeModel secondPlacePrize = tournament.Prizes.Where(x => x.PlaceNumber == 2).FirstOrDefault();
+
+                if (firstPlacePrize != null)
+                {
+                    decimal winnerPrizeAmt = CalculatePayout(firstPlacePrize, totalIncome);
+                    body.AppendLine($"<p>{winner.TeamName} will receive ${string.Format("{0:0.00}", winnerPrizeAmt)}!</p>");
+                }
+
+                if (secondPlacePrize != null)
+                {
+                    decimal runnerUpPrizeAmt = CalculatePayout(secondPlacePrize, totalIncome);
+                    body.AppendLine($"<p>{runnerUp.TeamName} will receive ${string.Format("{0:0.00}", runnerUpPrizeAmt)}.</p>");
+                }
+
+                if (firstPlacePrize != null || secondPlacePrize != null)
+                {
+                    body.AppendLine("<br>");
+                }
+            }
+
+            body.AppendLine("<p>Hope everyone had a great time.</p>");
+            body.AppendLine("<p>~Tournament Tracker</p>");
+
+            List<string> bcc = new List<string>();
+            foreach (TeamModel t in tournament.EnteredTeams)
+            {
+                foreach (PersonModel player in t.TeamMembers)
+                {
+                    bcc.Add(player.Email);
+                }
+            }
+
+            EmailLogic.SendEmail(new List<string>(), bcc, subject, body.ToString());
+
+            // Complete tournament
+            tournament.CompleteTournament();
+        }
+
+        private static decimal CalculatePayout(PrizeModel prize, decimal totalIncome)
+        {
+            decimal prizeAmount = prize.PrizeAmount;
+
+            if (prize.PrizeAmount == 0)
+            {
+                prizeAmount = Decimal.Multiply(totalIncome, Convert.ToDecimal(prize.PrizePercentage / 100));
+            }
+
+            return prizeAmount;
         }
 
         public static void AlertUsersToNewRound(this TournamentModel tournament)
@@ -106,13 +168,13 @@ namespace TrackerLibrary
             TeamModel competitor = matchup.Entries.Where(x => x.TeamCompeting != me.TeamCompeting).FirstOrDefault()?.TeamCompeting;
             if (competitor is null)
             {
-                body.AppendLine("<h1>You have a bye week this round!</h1>");
+                body.AppendLine("<h2>You have a bye week this round!</h2>");
                 body.AppendLine("<p>Enjoy your round off.</p>");
                 body.AppendLine("<p>~Tournament Tracker</p>");
             }
             else
             {
-                body.AppendLine("<h1>You have a new matchup!</h1>");
+                body.AppendLine("<h2>You have a new matchup!</h2>");
                 body.Append("<p><strong>Competitor: </strong>");
                 body.AppendLine(competitor.TeamName + "</p>");
                 body.AppendLine("<p>Have a great time.</p>");

@@ -22,11 +22,17 @@ namespace TrackerUI
         {
             InitializeComponent();
             tm = tournament;
+            tm.OnTournamentFinished += TM_OnTournamentFinished;
 
             tournamentName.Text = tm.TournamentName;
 
             WireUpLists();
             LoadRounds();
+        }
+
+        private void TM_OnTournamentFinished(object sender, DateTime e)
+        {
+            this.Close();
         }
 
         private void WireUpLists()
@@ -182,6 +188,7 @@ namespace TrackerUI
             }
 
             LoadMatchups(TournamentLogic.GetCurrentRound(tm));
+            roundDropDown.SelectedItem = TournamentLogic.GetCurrentRound(tm);
         }
 
         private string ValidateScores()
